@@ -1,4 +1,5 @@
-# Projects-AdiNicolae
-Assignments received and developed over the course of the internship.
+# Adi Nicolae's Projects
 
-Every branch of this repository describes one of the afore-mentioned assignments.
+## Week 6 - **ASP .NET Core APIs**
+
+### RestAPIApp - Cocktails API
