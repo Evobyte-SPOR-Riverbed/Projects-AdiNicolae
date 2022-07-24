@@ -127,9 +127,21 @@
               "vendorChunk": false
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "Drinktionary"
+  "defaultProject": "Drinktionary",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
