@@ -1,18 +1,47 @@
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+html {
+    font-size: 16px;
 }
 
-html {
-  font-size: 14px;
+mat-form-field {
+    border: 0px;
+    padding: 0 0 0 0;
+    font-size: 16px;
+    margin-right: 8px;
 }
+
+mat-form-field input {
+    border: 0;
+    padding: 0px 0px 0px 0px;
+}
+
+mat-icon {
+  margin-right: 8px;
+}
+
+mat-toolbar-row {
+  display: flex;
+}
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+.linear-gradient {
+  background: rgb(255,255,255);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+}
+
+.navbar-logo svg {
+  height: 24px;
+  margin-right: 8px;
+}
+
+.nav-button-row button {
+  margin-right: 8px;
+}
+
+.navbar-spacer {
+  flex: 1 1 auto;
 }
