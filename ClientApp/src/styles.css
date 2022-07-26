@@ -9,12 +9,6 @@ code {
   color: #e01a76;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
 html, body {
   height: 100%;
 }
@@ -22,4 +16,18 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: block;
+  overflow: hidden;
 }

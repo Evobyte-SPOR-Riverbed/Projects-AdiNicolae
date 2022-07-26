@@ -1,25 +1,34 @@
 html {
-    font-size: 16px;
+  font-size: 16px;
 }
 
-mat-form-field {
-    border: 0px;
-    padding: 0 0 0 0;
-    font-size: 16px;
+mat-divider {
+    height: 40%;
     margin-right: 8px;
 }
 
+mat-form-field {
+  border: 0px;
+  padding: 0 0 0 0;
+  font-size: 16px;
+  margin-right: 8px;
+}
+
 mat-form-field input {
-    border: 0;
-    padding: 0px 0px 0px 0px;
+  border: 0;
+  padding: 0px 0px 0px 0px;
 }
 
 mat-icon {
   margin-right: 8px;
 }
 
-mat-toolbar-row {
-  display: flex;
+mat-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
 }
 
 @media (min-width: 768px) {
@@ -28,9 +37,8 @@ mat-toolbar-row {
   }
 }
 
-.linear-gradient {
-  background: rgb(255,255,255);
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+.navbar-main-row mat-toolbar-row {
+  background: rgb(255, 255, 255, 190);
 }
 
 .navbar-logo svg {
