@@ -3,20 +3,13 @@ html {
 }
 
 mat-divider {
-    height: 40%;
-    margin-right: 8px;
+  height: 40%;
 }
 
 mat-form-field {
-  border: 0px;
-  padding: 0 0 0 0;
-  font-size: 16px;
+  height: 66%;
+  font-size: 10px;
   margin-right: 8px;
-}
-
-mat-form-field input {
-  border: 0;
-  padding: 0px 0px 0px 0px;
 }
 
 mat-icon {
@@ -47,7 +40,7 @@ mat-toolbar {
 }
 
 .nav-button-row button {
-  margin-right: 8px;
+  margin-left: 8px;
 }
 
 .navbar-spacer {
