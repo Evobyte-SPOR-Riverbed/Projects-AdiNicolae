@@ -10,7 +10,7 @@ export class WelcomeCardComponent {
   welcomeCardShown: boolean;
   constructor() {
     this.foreverClosedWelcomeCard = false;
-    this.welcomeCardShown = !JSON.parse(localStorage.getItem("ForeverClosedWelcomeCard") ?? "false");
+    this.welcomeCardShown = !JSON.parse(localStorage.getItem("foreverClosedWelcomeCard") ?? "false");
   }
 
   closeWelcomeCard() {
