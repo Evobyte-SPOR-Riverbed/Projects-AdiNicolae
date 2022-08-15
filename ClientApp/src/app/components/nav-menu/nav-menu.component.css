@@ -12,7 +12,7 @@ mat-divider {
 
 mat-form-field {
   height: 66%;
-  font-size: 16px;
+  font-size: 10px;
   margin-right: 8px;
 }
 
@@ -39,10 +39,6 @@ mat-toolbar {
 
 .nav-button-row button {
   margin-left: 8px;
-}
-
-.navbar-spacer {
-  flex: 1 1 auto;
 }
 
 @media (min-width: 768px) {

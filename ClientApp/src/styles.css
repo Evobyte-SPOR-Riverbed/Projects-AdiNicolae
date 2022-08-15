@@ -22,5 +22,9 @@ body {
 
 .root-container {
   padding-top: 64px;
-  height: 74%;
+  height: 100%;
+}
+
+.global-spacer {
+  flex: 1 1 auto;
 }
