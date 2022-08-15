@@ -11,6 +11,6 @@ export class NewHomeComponent {
   sampleCocktails: number[];
   constructor(@Inject(DrawerService) public drawer: DrawerService) {
     this.welcomeCardShown = true;
-    this.sampleCocktails = Array(100).fill(0);
+    this.sampleCocktails = Array(50).fill(0);
   }
 }

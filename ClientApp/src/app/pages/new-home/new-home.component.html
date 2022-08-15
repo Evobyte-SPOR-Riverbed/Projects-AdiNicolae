@@ -15,11 +15,18 @@
     </div>
   </mat-drawer>
   <mat-drawer-content>
-    <app-welcome-card></app-welcome-card>
-    <mat-grid-list cols="4" rowHeight="664px" gutterSize="16px">
-      <mat-grid-tile *ngFor="let cocktail of sampleCocktails">
-        <app-cocktail-card></app-cocktail-card>
-      </mat-grid-tile>
-    </mat-grid-list>
+    <mat-toolbar>
+      <span>Cocktail List</span>
+      <span class="global-spacer"></span>
+
+    </mat-toolbar>
+    <div class="mat-drawer-content-container">
+      <app-welcome-card></app-welcome-card>
+      <mat-grid-list cols="4" rowHeight="664px" gutterSize="8px">
+        <mat-grid-tile *ngFor="let cocktail of sampleCocktails">
+          <app-cocktail-card></app-cocktail-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
   </mat-drawer-content>
 </mat-drawer-container>

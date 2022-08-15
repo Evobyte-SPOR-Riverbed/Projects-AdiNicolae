@@ -3,7 +3,7 @@ mat-drawer {
   width: 16%;
 }
 
-mat-drawer-content {
+.mat-drawer-content-container {
   padding: 16px;
 }
 
