@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -14,6 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   imports: [
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDividerModule,
     MatFormFieldModule,
     MatGridListModule,
@@ -26,6 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   exports: [
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDividerModule,
     MatFormFieldModule,
     MatGridListModule,
