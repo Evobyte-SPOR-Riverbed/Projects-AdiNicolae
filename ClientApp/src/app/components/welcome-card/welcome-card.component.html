@@ -28,6 +28,7 @@
     </p>
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-stroked-button (click)="welcomeCardShown = false">Close</button>
+    <mat-checkbox [(ngModel)]="foreverClosedWelcomeCard">Never show again!</mat-checkbox>
+    <button mat-stroked-button (click)="closeWelcomeCard()">Close</button>
   </mat-card-actions>
 </mat-card>

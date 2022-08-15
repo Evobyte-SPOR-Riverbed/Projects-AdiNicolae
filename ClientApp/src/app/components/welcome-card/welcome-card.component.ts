@@ -6,8 +6,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./welcome-card.component.css']
 })
 export class WelcomeCardComponent {
+  foreverClosedWelcomeCard: boolean;
   welcomeCardShown: boolean;
   constructor() {
-    this.welcomeCardShown = true;
+    this.foreverClosedWelcomeCard = false;
+    this.welcomeCardShown = !JSON.parse(localStorage.getItem("ForeverClosedWelcomeCard") ?? "false");
+  }
+
+  closeWelcomeCard() {
+    this.welcomeCardShown = false;
+    if (this.foreverClosedWelcomeCard) {
+      localStorage.setItem("foreverClosedWelcomeCard", JSON.stringify(this.foreverClosedWelcomeCard));
+    }
   }
 }
