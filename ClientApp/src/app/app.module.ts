@@ -5,20 +5,30 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CocktailCardComponent } from './components/cocktail-card/cocktail-card.component';
+import { DrawerService } from './services/drawer.service';
+import { FooterComponent } from './components/footer/footer.component';
+import { MaterialModule } from './material.module';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
+import { WelcomeCardComponent } from './components/welcome-card/welcome-card.component';
+
 import { HomeComponent } from './pages/home/home.component';
+import { NewHomeComponent } from './pages/new-home/new-home.component';
 import { CounterComponent } from './pages/counter/counter.component';
 import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
     AppComponent,
+    CocktailCardComponent,
+    FooterComponent,
     NavMenuComponent,
     HomeComponent,
+    NewHomeComponent,
     CounterComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    WelcomeCardComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -26,13 +36,14 @@ import { MaterialModule } from './material.module';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'new-home', component: NewHomeComponent },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ]),
     BrowserAnimationsModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [DrawerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

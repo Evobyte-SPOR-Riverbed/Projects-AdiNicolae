@@ -1,0 +1,16 @@
+mat-drawer {
+  padding: 16px;
+  width: 16%;
+}
+
+mat-drawer-content {
+  padding: 16px;
+}
+
+mat-drawer-container {
+  height: 100% !important;
+}
+
+mat-divider {
+  padding-bottom: 8px;
+}

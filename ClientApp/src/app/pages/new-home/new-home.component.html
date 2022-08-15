@@ -1,0 +1,25 @@
+<mat-drawer-container>
+  <mat-drawer mode="side" position="end" [opened]="drawer.get()">
+    <div>
+      <h1>Filters</h1>
+      <p>Methods to help you filter your artistically-drinking habits.</p>
+      <mat-divider></mat-divider>
+      <h2>Glasses</h2>
+      <p>Nada!</p>
+      <mat-divider></mat-divider>
+      <h2>Preparation Methods</h2>
+      <p>Nada!</p>
+      <mat-divider></mat-divider>
+      <h2>Ingredients</h2>
+      <p>Nada!</p>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-welcome-card></app-welcome-card>
+    <mat-grid-list cols="4" rowHeight="664px" gutterSize="16px">
+      <mat-grid-tile *ngFor="let cocktail of sampleCocktails">
+        <app-cocktail-card></app-cocktail-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-drawer-content>
+</mat-drawer-container>
