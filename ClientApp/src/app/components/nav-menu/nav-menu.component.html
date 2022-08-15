@@ -1,7 +1,7 @@
 <header>
   <mat-toolbar class="mat-elevation-z6" role="heading">
     <mat-toolbar-row class="navbar-main-row">
-      <button mat-button color="primary" [ngClass]="{'mat-stroked-button': rlaH.isActive }" #rlaH="routerLinkActive" routerLinkActive [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['/']">
+      <button mat-stroked-button color="primary" routerLinkActive [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['/']">
         <div class="navbar-logo">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
             <g fill-rule="evenodd">
@@ -13,22 +13,30 @@
           <span>DRINKTIONARY</span>
         </div>
       </button>
-      <span class="navbar-spacer"></span>
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input matInput type="search">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-      <mat-divider [vertical]="true"></mat-divider>
       <div class="nav-button-row">
-        <button mat-stroked-button>
-          <mat-icon>login</mat-icon>
-          <span>Access</span>
+        <button mat-stroked-button routerLinkActive [routerLink]="['/new-home']">
+          <span>NEW HOME</span>
         </button>
-        <button mat-stroked-button style="padding-right: 0.5em;" (click)="filtersExpanded = !filtersExpanded">
-          <mat-icon>menu</mat-icon>
+        <button mat-stroked-button routerLinkActive [routerLink]="['/random-cocktail']">
+          <span>RANDOM COCKTAIL</span>
         </button>
       </div>
+        <span class="navbar-spacer"></span>
+        <mat-form-field>
+          <mat-label>Search</mat-label>
+          <input matInput type="search">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div class="nav-button-row">
+          <button mat-stroked-button>
+            <mat-icon>login</mat-icon>
+            <span>Access</span>
+          </button>
+          <button mat-stroked-button class="hamburger-menu-button" (click)="drawer.toggle()">
+            <mat-icon>menu</mat-icon>
+          </button>
+        </div>
     </mat-toolbar-row>
 
     <!--div class="container">

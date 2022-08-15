@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { DrawerService } from '../../services/drawer.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
-  static filtersExpanded = false;
+  constructor(@Inject(DrawerService) public drawer: DrawerService) { }
 }

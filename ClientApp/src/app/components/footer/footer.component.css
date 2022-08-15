@@ -1,0 +1,29 @@
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+footer {
+  justify-content: center;
+  position: static;
+  width: 100%;
+}
+
+mat-grid-list {
+  margin-top: 16px;
+}
+
+mat-grid-tile {
+  display: block;
+}
+
+span {
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+::ng-deep .mat-grid-tile-content {
+  align-items: start !important;
+}
