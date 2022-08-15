@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Provide sufficient contrast against white background */
+
+a:hover {
+  color: #ff4081 !important;
+}
+
 code {
   color: #e01a76;
 }
@@ -20,11 +25,11 @@ body {
   border-color: #1861ac;
 }
 
+.global-spacer {
+  flex: 1 1 auto;
+}
+
 .root-container {
   padding-top: 64px;
   height: 100%;
-}
-
-.global-spacer {
-  flex: 1 1 auto;
 }
