@@ -1,6 +1,6 @@
 <mat-drawer-container>
   <mat-drawer mode="side" position="end" [opened]="drawer.get()">
-    <div>
+    <div class="mat-drawer-container">
       <h1>Filters</h1>
       <p>Methods to help you filter your artistically-drinking habits.</p>
       <mat-divider></mat-divider>
@@ -18,7 +18,7 @@
     <mat-toolbar>
       <span>Cocktail List</span>
       <span class="global-spacer"></span>
-
+      <!-- Let's see if there's anything else! -->
     </mat-toolbar>
     <div class="mat-drawer-content-container">
       <app-welcome-card></app-welcome-card>
@@ -28,5 +28,11 @@
         </mat-grid-tile>
       </mat-grid-list>
     </div>
+    <mat-divider></mat-divider>
+    <mat-paginator [length]="100"
+                   [pageSize]="10"
+                   [pageSizeOptions]="[5, 10, 25, 100]"
+                   aria-label="Select page">
+    </mat-paginator>
   </mat-drawer-content>
 </mat-drawer-container>

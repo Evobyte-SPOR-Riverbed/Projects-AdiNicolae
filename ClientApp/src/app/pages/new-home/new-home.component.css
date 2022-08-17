@@ -3,14 +3,14 @@ mat-drawer {
   width: 16%;
 }
 
-.mat-drawer-content-container {
-  padding: 16px;
-}
-
 mat-drawer-container {
   height: 100% !important;
 }
 
-mat-divider {
+.mat-drawer-container > mat-divider {
   padding-bottom: 8px;
+}
+
+.mat-drawer-content-container {
+  padding: 16px;
 }
