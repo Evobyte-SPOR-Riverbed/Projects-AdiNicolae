@@ -10,13 +10,13 @@ export class WelcomeCardComponent {
   welcomeCardShown: boolean;
   constructor() {
     this.foreverClosedWelcomeCard = false;
-    this.welcomeCardShown = !JSON.parse(localStorage.getItem("foreverClosedWelcomeCard") ?? "false");
+    this.welcomeCardShown = !JSON.parse(localStorage.getItem("neverWelcome") ?? "false");
   }
 
   closeWelcomeCard() {
     this.welcomeCardShown = false;
     if (this.foreverClosedWelcomeCard) {
-      localStorage.setItem("foreverClosedWelcomeCard", JSON.stringify(this.foreverClosedWelcomeCard));
+      localStorage.setItem("neverWelcome", JSON.stringify(this.foreverClosedWelcomeCard));
     }
   }
 }
