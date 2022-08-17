@@ -17,11 +17,19 @@ mat-grid-tile {
   display: block;
 }
 
+mat-icon {
+  overflow: visible;
+}
+
 span {
   display: flex;
   justify-content: center;
   padding-top: 16px;
   padding-bottom: 16px;
+}
+
+.footer-container {
+  align-self: flex-end;
 }
 
 ::ng-deep .mat-grid-tile-content {

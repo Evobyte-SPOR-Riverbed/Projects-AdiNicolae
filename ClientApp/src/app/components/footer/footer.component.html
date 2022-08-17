@@ -1,11 +1,14 @@
 <footer>
-  <div style="align-self: flex-end;">
+  <div class="footer-container">
     <mat-divider></mat-divider>
     <mat-grid-list cols="3" rowHeight="168px">
       <mat-grid-tile *ngFor="let tile of tiles" [style.background]="tile.color">
         <div>
           <h2>
-            <a [href]="tile.url" [target]="tile.target">{{tile.title}}</a>
+            <a [href]="tile.url" [target]="tile.target">
+                <mat-icon [svgIcon]="tile.icon"></mat-icon>
+                {{tile.title}}
+            </a>
           </h2>
 
           <ul>
