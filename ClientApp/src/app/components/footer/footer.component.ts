@@ -27,7 +27,7 @@ export class FooterComponent {
       title: 'Drinktionary', url: '/', icon: 'logo', target: '_self', color: 'primary', links: [
         { title: 'Random Cocktail', url: '/random-cocktail', target: '_self' },
         { title: 'Github Repository', url: 'https://github.com/Evobyte-SPOR-Riverbed/Projects-AdiNicolae/tree/FinalProject', target: '_blank' },
-        { title: 'Contact Us!', url: 'mail:nicolae.adrian.m@gmail.com', target: '_blank' }
+        { title: 'Contact Us!', url: 'mailto:nicolae.adrian.m@gmail.com', target: '_blank' }
       ]
     },
     {
