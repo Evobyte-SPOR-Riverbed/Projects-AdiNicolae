@@ -1,16 +1,18 @@
-<mat-card>
-  <mat-card-title>{{cocktailName}}</mat-card-title>
-  <mat-card-subtitle>{{preparationMethodName}} - {{glassName}}</mat-card-subtitle>
-  <img mat-card-image [src]="cocktailImageUrl" alt="Photo of a {{cocktailName}}">
-  <mat-card-content>
-    <p>{{cocktailDescription}}</p>
-  </mat-card-content>
-  <mat-card-actions align="end">
-    <button mat-icon-button>
-      <mat-icon>share</mat-icon>
-    </button>
-    <button mat-icon-button>
-      <mat-icon>favorite_border</mat-icon>
-    </button>
-  </mat-card-actions>
-</mat-card>
+<div>
+  <mat-card>
+    <mat-card-title>{{cocktailName}}</mat-card-title>
+    <mat-card-subtitle>{{preparationMethodName}} - {{glassName}}</mat-card-subtitle>
+    <img mat-card-image [src]="cocktailImageUrl" alt="Photo of a {{cocktailName}}">
+    <mat-card-content>
+      <p>{{cocktailDescription}}</p>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-icon-button>
+        <mat-icon>share</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>favorite_border</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

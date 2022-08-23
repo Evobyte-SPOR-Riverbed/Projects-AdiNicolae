@@ -7,6 +7,10 @@ mat-drawer-container {
   height: 100% !important;
 }
 
+mat-grid-tile {
+  overflow: visible;
+}
+
 .mat-drawer-container > mat-divider {
   padding-bottom: 8px;
 }
