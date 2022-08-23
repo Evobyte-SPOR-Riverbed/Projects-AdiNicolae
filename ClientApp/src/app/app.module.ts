@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { AccessDialogComponent } from './components/access-dialog/access-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CocktailCardComponent } from './components/cocktail-card/cocktail-card.component';
 import { DrawerService } from './services/drawer.service';
@@ -21,6 +22,7 @@ import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
 @NgModule({
   declarations: [
     AppComponent,
+    AccessDialogComponent,
     CocktailCardComponent,
     FooterComponent,
     NavMenuComponent,

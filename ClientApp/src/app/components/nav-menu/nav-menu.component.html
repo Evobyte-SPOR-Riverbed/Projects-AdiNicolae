@@ -21,22 +21,22 @@
           <span>RANDOM COCKTAIL</span>
         </button>
       </div>
-        <span class="global-spacer"></span>
-        <mat-form-field>
-          <mat-label>Search</mat-label>
-          <input matInput type="search">
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-        <mat-divider [vertical]="true"></mat-divider>
-        <div class="nav-button-row">
-          <button mat-stroked-button>
-            <mat-icon>login</mat-icon>
-            <span>Access</span>
-          </button>
-          <button mat-stroked-button class="hamburger-menu-button" (click)="drawer.toggle()">
-            <mat-icon>menu</mat-icon>
-          </button>
-        </div>
+      <span class="global-spacer"></span>
+      <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input matInput type="search">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div class="nav-button-row">
+        <button mat-stroked-button (click)="openAccessDialog()">
+          <mat-icon>account_circle</mat-icon>
+          <span>Access</span>
+        </button>
+        <button mat-stroked-button class="hamburger-menu-button" (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
     </mat-toolbar-row>
 
     <!--div class="container">

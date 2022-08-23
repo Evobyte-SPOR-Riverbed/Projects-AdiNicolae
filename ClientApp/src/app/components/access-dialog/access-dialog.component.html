@@ -1,0 +1,30 @@
+<div class="mat-dialog-title">
+  <div class="title-mat-icon-container">
+    <mat-icon svgIcon="logo"></mat-icon>
+  </div>
+  <h2>Welcome to <span>Drinktionary</span>, stranger!</h2>
+</div>
+
+<mat-dialog-content>
+  <p>It's nice meeting you, but we got to proceed further..</p>
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">person_add</mat-icon>
+        Register
+      </ng-template>
+      Register, bee-yatch!
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">login</mat-icon>
+        Login
+      </ng-template>
+      Login, bee-yatch!
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button mat-dialog-close>Cancel</button>
+  <button mat-stroked-button cdkFocusInitial>Proceed</button>
+</mat-dialog-actions>

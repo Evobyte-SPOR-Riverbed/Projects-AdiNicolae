@@ -1,0 +1,16 @@
+span {
+  color: #ff4081;
+}
+
+.title-mat-icon-container {
+  display: flex;
+  justify-content: center;
+}
+
+.title-mat-icon-container > mat-icon {
+  display: flex;
+}
+
+.tab-icon {
+  margin-right: 8px;
+}
