@@ -52,6 +52,9 @@ public class Cocktail
     [Required(ErrorMessage = "Cocktail preparation method is required.")]
     public PreparationMethod Method { get; set; }
 
-    [InverseProperty("Cocktail")]
+    [InverseProperty(nameof(Review.Cocktail))]
     public ICollection<Review> Reviews { get; set; }
+
+    [InverseProperty(nameof(User.FavoriteCocktails))]
+    public ICollection<User> FavoritedUsers { get; set; }
 }

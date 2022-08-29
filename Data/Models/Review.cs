@@ -12,7 +12,7 @@ public class Review
         CreatedAt = DateTime.Now;
     }
 
-    public Review(string content, int rating, string author)
+    public Review(string content, int rating, User author)
     {
         Id = Guid.NewGuid();
         Content = content;
@@ -21,7 +21,7 @@ public class Review
         CreatedAt = DateTime.Now;
     }
 
-    public Review(string content, int rating, string author, Cocktail cocktail)
+    public Review(string content, int rating, User author, Cocktail cocktail)
     {
         Id = Guid.NewGuid();
         Content = content;
@@ -39,12 +39,13 @@ public class Review
     public string Content { get; set; }
 
     [Required(ErrorMessage = "Review rating is required.")]
-    [Range(0, 5, ErrorMessage = "Rating must be between 0 and 5.")]
+    [Range(0, 5, ErrorMessage = "Rating must be between {0} and {1}.")]
     public int Rating { get; set; }
 
-    [MaxLength(768)]
-    [Required(ErrorMessage = "Review author is required.")]
-    public string Author { get; set; }
+    public Guid AuthorId { get; set; }
+
+    [ForeignKey(nameof(AuthorId))]
+    public User Author { get; set; }
 
     public DateTime CreatedAt { get; }
 
