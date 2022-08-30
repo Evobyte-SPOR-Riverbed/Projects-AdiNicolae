@@ -95,7 +95,7 @@ public class User
 
     [StringLength(2, ErrorMessage = "Invalid country code.")]
     [Required(ErrorMessage = "Country code is required.")]
-    public string CountryISO2 { get; set; }
+    public string CountryAlpha2 { get; set; }
 
     public DateTime CreatedAt { get; }
 

@@ -8,7 +8,7 @@ interface IDictionary {
 
 export interface ICountry {
   name: string;
-  iso2Code: string;
+  alpha2Code: string;
   flagUrl: string;
 }
 
@@ -30,7 +30,7 @@ export class CountryService {
     return this.httpClient.get<[]>(this.countryApiUrl + 'all/', this.httpOptions)
       .pipe(map(response => response.map((countryData): ICountry => ({
         name: countryData['name']['common'],
-        iso2Code: countryData['cca2'],
+        alpha2Code: countryData['cca2'],
         flagUrl: countryData['flags']['png']
       }))), catchError(this.errorHandler));
   }
