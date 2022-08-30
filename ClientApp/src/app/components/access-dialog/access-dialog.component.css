@@ -1,15 +1,65 @@
+mat-form-field {
+  width: 100%;
+}
+
+mat-form-field > mat-error {
+  display: none !important;
+}
+
+mat-form-field > mat-error:first-child {
+  display: block !important;
+}
+
+.flag-image {
+  margin-right: 8px;
+  height: 1em;
+  width: 1.33em;
+}
+
 span {
   color: #ff4081;
 }
+
+.clickable-icon {
+  cursor: pointer;
+}
+
+.form-container {
+  margin-top: 8px;
+  scroll-behavior: unset;
+}
+
+.form-container > .remember-checkbox-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.form-group-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-group-container > mat-form-field {
+  width: 50%;
+}
+
+  .form-group-container > mat-form-field:first-child {
+    padding-right: 4px;
+  }
+
+  .form-group-container > mat-form-field:last-child {
+    padding-left: 4px;
+  }
 
 .title-mat-icon-container {
   display: flex;
   justify-content: center;
 }
 
-.title-mat-icon-container > mat-icon {
-  display: flex;
-}
+  .title-mat-icon-container > mat-icon {
+    display: flex;
+  }
 
 .tab-icon {
   margin-right: 8px;
