@@ -29,28 +29,28 @@ public class User
         CreatedAt = DateTime.Now;
     }
 
-    public User(string firstName, string lastName, string email, string password, int age, SexType sexType, DrinkerType drinkerType, string countryISO2)
+    public User(string firstName, string lastName, string email, string password, DateOnly birthday, SexType sexType, DrinkerType drinkerType, string countryISO2)
     {
         Id = Guid.NewGuid();
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         Password = password;
-        Age = age;
+        Birthday = birthday;
         Sex = sexType;
         DrinkerType = drinkerType;
         CountryISO2 = countryISO2;
         CreatedAt = DateTime.Now;
     }
 
-    public User(string firstName, string lastName, string email, string password, int age, SexType sexType, DrinkerType drinkerType, string countryISO2, ICollection<Review> reviews, ICollection<Cocktail> favoriteCocktails)
+    public User(string firstName, string lastName, string email, string password, DateOnly birthday, SexType sexType, DrinkerType drinkerType, string countryISO2, ICollection<Review> reviews, ICollection<Cocktail> favoriteCocktails)
     {
         Id = Guid.NewGuid();
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         Password = password;
-        Age = age;
+        Birthday = birthday;
         Sex = sexType;
         DrinkerType = drinkerType;
         CountryISO2 = countryISO2;
@@ -81,9 +81,11 @@ public class User
     public byte[] AvatarBytes { get; set; }
 
     // Taking only default age limit in consideration, considering to implement limit per country.
-    [Range(18, double.PositiveInfinity, ErrorMessage = "Age must be between {0} and {1}.")]
-    [Required(ErrorMessage = "Age is required.")]
-    public int Age { get; set; }
+    // [Range(18, double.PositiveInfinity, ErrorMessage = "Age must be between {0} and {1}.")]
+    // [Required(ErrorMessage = "Age is required.")] public int Age { get; set; }
+
+    [Required(ErrorMessage = "Birthday is required.")]
+    public DateOnly Birthday { get; set; }
 
     [Required(ErrorMessage = "Sex is required.")]
     public SexType Sex { get; set; }
