@@ -1,23 +1,30 @@
+// Modules
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CustomValidatorsModule } from './helpers/custom-validators.module';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+// Components
 import { AppComponent } from './app.component';
 import { AccessDialogComponent } from './components/access-dialog/access-dialog.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CocktailCardComponent } from './components/cocktail-card/cocktail-card.component';
-import { DrawerService } from './services/drawer.service';
 import { FooterComponent } from './components/footer/footer.component';
 import { MaterialModule } from './material.module';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { WelcomeCardComponent } from './components/welcome-card/welcome-card.component';
 
+// Pages
 import { HomeComponent } from './pages/home/home.component';
 import { NewHomeComponent } from './pages/new-home/new-home.component';
 import { CounterComponent } from './pages/counter/counter.component';
 import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
+
+// Services
+import { CountryService } from './services/country.service'
+import { DrawerService } from './services/drawer.service';
 
 @NgModule({
   declarations: [
@@ -34,8 +41,10 @@ import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    CustomValidatorsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'new-home', component: NewHomeComponent },
@@ -45,7 +54,7 @@ import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
     BrowserAnimationsModule,
     MaterialModule
   ],
-  providers: [DrawerService],
+  providers: [CountryService, DrawerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
