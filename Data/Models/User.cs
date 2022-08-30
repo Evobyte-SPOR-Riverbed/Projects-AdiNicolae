@@ -29,7 +29,7 @@ public class User
         CreatedAt = DateTime.Now;
     }
 
-    public User(string firstName, string lastName, string email, string password, DateOnly birthday, SexType sexType, DrinkerType drinkerType, string countryISO2)
+    public User(string firstName, string lastName, string email, string password, DateTime birthday, SexType sexType, DrinkerType drinkerType, string countryAlpha2)
     {
         Id = Guid.NewGuid();
         FirstName = firstName;
@@ -39,11 +39,11 @@ public class User
         Birthday = birthday;
         Sex = sexType;
         DrinkerType = drinkerType;
-        CountryISO2 = countryISO2;
+        CountryAlpha2 = countryAlpha2;
         CreatedAt = DateTime.Now;
     }
 
-    public User(string firstName, string lastName, string email, string password, DateOnly birthday, SexType sexType, DrinkerType drinkerType, string countryISO2, ICollection<Review> reviews, ICollection<Cocktail> favoriteCocktails)
+    public User(string firstName, string lastName, string email, string password, DateTime birthday, SexType sexType, DrinkerType drinkerType, string countryAlpha2, ICollection<Review> reviews, ICollection<Cocktail> favoriteCocktails)
     {
         Id = Guid.NewGuid();
         FirstName = firstName;
@@ -53,7 +53,7 @@ public class User
         Birthday = birthday;
         Sex = sexType;
         DrinkerType = drinkerType;
-        CountryISO2 = countryISO2;
+        CountryAlpha2 = countryAlpha2;
         Reviews = reviews;
         FavoriteCocktails = favoriteCocktails;
         CreatedAt = DateTime.Now;
@@ -85,7 +85,7 @@ public class User
     // [Required(ErrorMessage = "Age is required.")] public int Age { get; set; }
 
     [Required(ErrorMessage = "Birthday is required.")]
-    public DateOnly Birthday { get; set; }
+    public DateTime Birthday { get; set; }
 
     [Required(ErrorMessage = "Sex is required.")]
     public SexType Sex { get; set; }
