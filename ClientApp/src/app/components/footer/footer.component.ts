@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-export interface Tile {
+interface Tile {
   color: string;
   icon: string;
   title: string;
@@ -9,7 +9,7 @@ export interface Tile {
   links: Link[];
 }
 
-export interface Link {
+interface Link {
   title: string;
   url: string;
   target: string;
