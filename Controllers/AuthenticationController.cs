@@ -46,8 +46,8 @@ public class AuthenticationController : ControllerBase
             return NotFound();
         }
 
-        User? validPasswordUser = await _context.Users.FindAsync((User u) => u.EmailAddress == userLogin.EmailAddress && u.Password == userLogin.Password);
-        if (validPasswordUser == null)
+        User? validLoginUser = await _context.Users.FindAsync((User u) => u.EmailAddress == userLogin.EmailAddress && u.Password == userLogin.Password);
+        if (validLoginUser == null)
         {
             return Problem("User's 'Password' does not match.");
         }
@@ -58,7 +58,12 @@ public class AuthenticationController : ControllerBase
         JwtSecurityToken tokenOptions = new(
             issuer: ConfigurationManager.AppSetting["JWT:ValidIssuer"],
             audience: ConfigurationManager.AppSetting["JWT:ValidAudience"],
-            claims: new List<Claim>(),
+            claims: new List<Claim>
+            {
+                new Claim(nameof(validLoginUser.FirstName), validLoginUser.FirstName),
+                new Claim(nameof(validLoginUser.LastName), validLoginUser.LastName),
+                new Claim(nameof(validLoginUser.EmailAddress), validLoginUser.EmailAddress)
+            },
             expires: expirationDate,
             signingCredentials: signinCredentials);
         string tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
