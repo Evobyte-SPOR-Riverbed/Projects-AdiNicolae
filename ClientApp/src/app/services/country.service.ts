@@ -1,10 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import Config from '../../assets/config.json';
 import { catchError, map, Observable, throwError } from 'rxjs';
-
-interface IDictionary {
-  [index: string]: string
-}
 
 export interface ICountry {
   name: string;
@@ -22,12 +19,12 @@ export class CountryService {
       'Upgrade-Insecure-Requests': '1'
     })
   }
-  private countryApiUrl = 'https://restcountries.com/v3.1/';
+  private apiUrl = Config.countryApiServer.url;
 
   constructor(private httpClient: HttpClient) { }
 
   getCountries(): Observable<ICountry[]> {
-    return this.httpClient.get<[]>(this.countryApiUrl + 'all/', this.httpOptions)
+    return this.httpClient.get<[]>(this.apiUrl + '/all/', this.httpOptions)
       .pipe(map(response => response.map((countryData): ICountry => ({
         name: countryData['name']['common'],
         alpha2Code: countryData['cca2'],
@@ -46,6 +43,6 @@ export class CountryService {
     } else {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    return throwError(errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 }
