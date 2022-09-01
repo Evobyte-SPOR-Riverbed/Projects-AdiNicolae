@@ -2,6 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomValidatorsModule } from './helpers/custom-validators.module';
+import { JwtModule } from '@auth0/angular-jwt';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,8 +24,13 @@ import { CounterComponent } from './pages/counter/counter.component';
 import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
 
 // Services
+import { AuthGuardService } from './services/auth-guard.service';
 import { CountryService } from './services/country.service'
 import { DrawerService } from './services/drawer.service';
+
+export function accessTokenGetter() {
+  return localStorage.getItem("accessToken");
+}
 
 @NgModule({
   declarations: [
@@ -51,10 +57,17 @@ import { DrawerService } from './services/drawer.service';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ]),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: accessTokenGetter,
+        allowedDomains: ["localhost:44421"],
+        disallowedRoutes: []
+      }
+    }),
     BrowserAnimationsModule,
     MaterialModule
   ],
-  providers: [CountryService, DrawerService],
+  providers: [AuthGuardService, CountryService, DrawerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
