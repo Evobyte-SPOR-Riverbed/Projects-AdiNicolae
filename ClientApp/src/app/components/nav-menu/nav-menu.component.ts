@@ -12,12 +12,8 @@ export class NavMenuComponent {
   constructor(public accessDialog: MatDialog, @Inject(DrawerService) public drawer: DrawerService) { }
 
   openAccessDialog(): void {
-    const dialogRef = this.accessDialog.open(AccessDialogComponent, {
+    this.accessDialog.open(AccessDialogComponent, {
       width: '24%'
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('The dialog was closed');
     });
   }
 }
