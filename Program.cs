@@ -1,5 +1,8 @@
+using Drinktionary.Cache;
 using Drinktionary.Data;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Drinktionary;
 
@@ -11,6 +14,28 @@ public static class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+
+        // Add scoped cache service.
+        builder.Services.AddScoped<ICacheService, CacheService>();
+
+        // Add authentication service.
+        builder.Services.AddAuthentication(opt =>
+        {
+            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = ConfigurationManager.AppSetting["JWT:ValidIssuer"],
+                ValidAudience = ConfigurationManager.AppSetting["JWT:ValidAudience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]))
+            };
+        });
 
         // Add database context.
         builder.Services.AddDbContext<DatabaseContext>();
@@ -26,12 +51,16 @@ public static class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
         app.UseStaticFiles();
         app.UseRouting();
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller}/{action=Index}/{id?}");
+            pattern: "{controller}/{action=Index}/{id?}"
+        );
 
         app.MapFallbackToFile("index.html");
 
