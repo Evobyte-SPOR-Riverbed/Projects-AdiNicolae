@@ -6,9 +6,9 @@ public class LoginResponse
 {
     public LoginResponse(string token)
     {
-        Token = token;
+        AccessToken = token;
     }
 
-    [Required(ErrorMessage = "Token is required.")]
-    public string Token { get; set; }
+    [Required(ErrorMessage = "Access token is required.")]
+    public string AccessToken { get; set; }
 }
