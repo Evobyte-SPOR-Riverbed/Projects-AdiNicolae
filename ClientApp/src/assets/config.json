@@ -1,0 +1,8 @@
+{
+  "apiServer": {
+    "url": "https://localhost:44421/api"
+  },
+  "countryApiServer": {
+    "url": "https://restcountries.com/v3.1"
+  }
+}
