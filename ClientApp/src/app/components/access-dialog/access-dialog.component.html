@@ -59,13 +59,6 @@
         </mat-form-field>
         <div class="form-group-container">
           <mat-form-field>
-            <mat-label>Birthday</mat-label>
-            <input matInput formControlName="birthday" type="date" max="{{maxDate}}" min="{{minDate}}">
-            <mat-error *ngFor="let validation of formControlsValidations.birthday">
-              <div *ngIf="registerFormFields.birthday.hasError(validation.type)">{{ validation.message }}</div>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field>
             <mat-label>Country</mat-label>
             <mat-select formControlName="country">
               <mat-option *ngFor="let country of countries" [value]="country.alpha2Code">
@@ -76,7 +69,13 @@
             <mat-error *ngFor="let validation of formControlsValidations.country">
               <div *ngIf="registerFormFields.country.hasError(validation.type)">{{ validation.message }}</div>
             </mat-error>
-            <!-- Add Auto-complete -->
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Birthday</mat-label>
+            <input matInput formControlName="birthday" type="date" max="{{maxDate}}" min="{{minDate}}">
+            <mat-error *ngFor="let validation of formControlsValidations.birthday">
+              <div *ngIf="registerFormFields.birthday.hasError(validation.type)">{{ validation.message }}</div>
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="form-group-container">
