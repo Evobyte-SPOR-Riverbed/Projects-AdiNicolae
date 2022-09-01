@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Drinktionary.Data;
 using Drinktionary.Data.Models;
 using Drinktionary.Data.Models.Authentication;
@@ -62,7 +56,11 @@ public class AuthenticationController : ControllerBase
             {
                 new Claim(nameof(validLoginUser.FirstName), validLoginUser.FirstName),
                 new Claim(nameof(validLoginUser.LastName), validLoginUser.LastName),
-                new Claim(nameof(validLoginUser.EmailAddress), validLoginUser.EmailAddress)
+                new Claim(nameof(validLoginUser.EmailAddress), validLoginUser.EmailAddress),
+                new Claim(nameof(validLoginUser.CountryAlpha2), validLoginUser.CountryAlpha2),
+                new Claim("Age", (validLoginUser.Birthday.Year - DateTime.Now.Year).ToString()),
+                new Claim(nameof(validLoginUser.Sex), validLoginUser.Sex.ToString()),
+                new Claim(nameof(validLoginUser.DrinkerType), validLoginUser.DrinkerType.ToString())
             },
             expires: expirationDate,
             signingCredentials: signinCredentials);
@@ -88,6 +86,6 @@ public class AuthenticationController : ControllerBase
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        return Ok();
+        return Ok("User registered successfully.");
     }
 }
