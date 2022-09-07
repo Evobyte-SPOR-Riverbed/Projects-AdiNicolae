@@ -10,18 +10,18 @@ mat-form-field > mat-error:first-child {
   display: block !important;
 }
 
-.flag-image {
-  margin-right: 8px;
-  height: 1em;
-  width: 1.33em;
-}
-
 span {
   color: #ff4081;
 }
 
 .clickable-icon {
   cursor: pointer;
+}
+
+.flag-image {
+  margin-right: 8px;
+  height: 1em;
+  width: 1.33em;
 }
 
 .form-container {

@@ -29,15 +29,41 @@
       </mat-form-field>
       <mat-divider [vertical]="true"></mat-divider>
       <div class="nav-button-row">
-        <button mat-stroked-button (click)="openAccessDialog()">
+        <button *ngIf="!authenticationService.isAuthenticated" mat-stroked-button (click)="openAccessDialog()">
           <mat-icon>account_circle</mat-icon>
           <span>Access</span>
+        </button>
+        <button *ngIf="authenticationService.isAuthenticated" mat-stroked-button [matMenuTriggerFor]="accountMenu">
+          <mat-icon>waving_hand</mat-icon>
+          <span>Hi, {{ authenticationService.currentUserValue.firstName}} {{ authenticationService.currentUserValue.lastName[0]}}.</span>
         </button>
         <button mat-stroked-button class="hamburger-menu-button" (click)="drawer.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
       </div>
     </mat-toolbar-row>
+
+    <mat-menu #accountMenu="matMenu">
+      <div *ngIf="authenticationService.isAuthenticated">
+        <div class="account-info-container">
+          <span>{{ authenticationService.currentUserValue.emailAddress }}</span>
+          <div class="account-info-container">{{ authenticationService.currentUserValue.countryAlpha2 }} {{ authenticationService.currentUserValue.sex }} - {{ authenticationService.currentUserValue.age }} Y.O.</div>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>
+          <mat-icon>book</mat-icon>
+          <span>Favorites</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </div>
+    </mat-menu>
 
     <!--div class="container">
     <a class="navbar-brand" [routerLink]="['/']">Drinktionary</a>

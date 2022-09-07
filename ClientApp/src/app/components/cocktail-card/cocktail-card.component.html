@@ -7,10 +7,12 @@
       <p>{{cocktailDescription}}</p>
     </mat-card-content>
     <mat-card-actions align="end">
-      <button mat-icon-button>
+      <button mat-icon-button matTooltip="Share this cocktail.">
         <mat-icon>share</mat-icon>
       </button>
-      <button mat-icon-button>
+      <button mat-icon-button
+              [disabled]="!authenticationService.isAuthenticated"
+              [matTooltip]="authenticationService.isAuthenticated ? 'Add this cocktail to favorites.' : 'You have to be authenticated.'">
         <mat-icon>favorite_border</mat-icon>
       </button>
     </mat-card-actions>

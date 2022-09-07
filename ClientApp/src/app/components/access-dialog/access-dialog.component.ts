@@ -1,22 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTabGroup } from '@angular/material/tabs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { CustomValidatorsModule } from '../../helpers/custom-validators.module';
+import { DrinkerType, SexType } from '../../helpers/enums.module';
+import { AuthenticationService, LoginResponse, UserLogin } from '../../services/authentication.service';
 import { CountryService, ICountry } from '../../services/country.service';
-
-enum DrinkerType {
-  SocialDrinker,
-  ConformityDrinker,
-  EnhancementDrinker,
-  CopingDrinker,
-  None
-}
-
-enum SexType {
-  Male,
-  Female,
-  Intersex,
-  Other
-}
 
 enum TabType {
   Register,
@@ -39,6 +30,10 @@ interface Sex {
   styleUrls: ['./access-dialog.component.css']
 })
 export class AccessDialogComponent {
+  // Components
+  @ViewChild('mainTabGroup')
+  mainTabGroup!: MatTabGroup;
+
   // Pseudo-enums
   TabType = TabType;
 
@@ -92,7 +87,15 @@ export class AccessDialogComponent {
   showConfirmPassword = false;
   submitted = false;
 
-  constructor(private countryService: CountryService) {
+  // Getters
+  get loginFormFields() {
+    return this.loginForm.controls;
+  }
+  get registerFormFields() {
+    return this.registerForm.controls;
+  }
+
+  constructor(private authenticationService: AuthenticationService, private countryService: CountryService, private dialogRef: MatDialogRef<AccessDialogComponent>, private snackBar: MatSnackBar) {
     this.countryService.getCountries().subscribe((countryData: ICountry[]) => {
       this.countries = countryData;
       this.countries.sort((n1, n2) => {
@@ -131,7 +134,7 @@ export class AccessDialogComponent {
       {
         emailAddress: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [Validators.required]),
-        remember: new FormControl(false)
+        rememberBrowser: new FormControl(false)
       }
     );
 
@@ -151,6 +154,53 @@ export class AccessDialogComponent {
     );
   }
 
-  get loginFormFields() { return this.loginForm.controls; }
-  get registerFormFields() { return this.registerForm.controls; }
+  submitAccess() {
+    if (this.mainTabGroup.selectedIndex == TabType.Login) {
+      if (this.loginForm.invalid) {
+        return;
+      }
+
+      this.loading = true;
+      this.authenticationService.authenticate({
+        emailAddress: this.loginFormFields.emailAddress.value,
+        password: this.loginFormFields.password.value,
+        rememberBrowser: this.loginFormFields.rememberBrowser.value
+      }).subscribe(loginResponse => {
+        // localStorage.setItem("accessToken", loginResponse.accessToken);
+        this.dialogRef.close();
+        this.snackBar.open('Authentication was successful.');
+      }, error => {
+        this.loading = false;
+        this.snackBar.open(`${error.statusText}\n${error.message}`);
+        console.log(error);
+      });
+    }
+
+    if (this.mainTabGroup.selectedIndex == TabType.Register) {
+      if (this.registerForm.invalid) {
+        return;
+      }
+
+      this.loading = true;
+      this.authenticationService.register({
+        firstName: this.registerFormFields.firstName.value,
+        lastName: this.registerFormFields.lastName.value,
+        emailAddress: this.registerFormFields.emailAddress.value,
+        password: this.registerFormFields.password.value,
+        countryAlpha2: this.registerFormFields.country.value,
+        birthday: this.registerFormFields.birthday.value,
+        sex: this.registerFormFields.sex.value,
+        drinkerType: this.registerFormFields.drinkerType.value,
+      }).subscribe(() => {
+        this.loading = false;
+        this.mainTabGroup.selectedIndex = TabType.Login;
+        this.loginFormFields.emailAddress.setValue(this.registerFormFields.emailAddress.value);
+        this.snackBar.open('Registration was successful.');
+      }, error => {
+        this.loading = false;
+        this.snackBar.open(`${error.statusText}\n${error.message}`);
+        console.log(error);
+      });
+    }
+  }
 }
