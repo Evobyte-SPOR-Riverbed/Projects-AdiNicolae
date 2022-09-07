@@ -5,7 +5,7 @@ import { CustomValidatorsModule } from './helpers/custom-validators.module';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 // Components
@@ -27,8 +27,9 @@ import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { CountryService } from './services/country.service'
 import { DrawerService } from './services/drawer.service';
+import { BearerInterceptor } from './helpers/bearer-interceptor.module';
 
-export function accessTokenGetter() {
+export function accessTokenGetter(): string | null {
   return localStorage.getItem("accessToken");
 }
 
@@ -67,7 +68,7 @@ export function accessTokenGetter() {
     BrowserAnimationsModule,
     MaterialModule
   ],
-  providers: [AuthGuardService, CountryService, DrawerService],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: BearerInterceptor, multi: true }, AuthGuardService, CountryService, DrawerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
