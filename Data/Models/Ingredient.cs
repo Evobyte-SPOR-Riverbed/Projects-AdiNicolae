@@ -13,21 +13,19 @@ public class Ingredient
         CreatedAt = DateTime.Now;
     }
 
-    public Ingredient(string name, string description, Uri imageUri)
+    public Ingredient(string name, string description)
     {
         Id = Guid.NewGuid();
         Name = name;
         Description = description;
-        ImageUri = imageUri;
         CreatedAt = DateTime.Now;
     }
 
-    public Ingredient(string name, string description, Uri imageUri, ICollection<Cocktail> cocktails)
+    public Ingredient(string name, string description, ICollection<Cocktail> cocktails)
     {
         Id = Guid.NewGuid();
         Name = name;
         Description = description;
-        ImageUri = imageUri;
         CreatedAt = DateTime.Now;
         Cocktails = cocktails;
     }
@@ -43,10 +41,10 @@ public class Ingredient
     [Required(ErrorMessage = "Ingredient description is required.")]
     public string Description { get; set; }
 
-    [Required(ErrorMessage = "Ingredient image uri is required.")]
-    public Uri ImageUri { get; set; }
-
-    public DateTime CreatedAt { get; }
+    [Required(ErrorMessage = "Creation date is required.")]
+    public DateTime CreatedAt { get; set; }
 
     public ICollection<Cocktail> Cocktails { get; set; }
+
+    public List<CocktailIngredient> CocktailIngredients { get; set; }
 }

@@ -39,7 +39,8 @@ public class PreparationMethod
     [Required(ErrorMessage = "Preparation method description is required.")]
     public string Description { get; set; }
 
-    public DateTime CreatedAt { get; }
+    [Required(ErrorMessage = "Creation date is required.")]
+    public DateTime CreatedAt { get; set; }
 
     [InverseProperty(nameof(Cocktail.Method))]
     public ICollection<Cocktail> Cocktails { get; set; }

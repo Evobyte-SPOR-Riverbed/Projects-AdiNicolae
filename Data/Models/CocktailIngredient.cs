@@ -6,14 +6,26 @@ namespace Drinktionary.Data.Models;
 [Table(nameof(CocktailIngredient))]
 public class CocktailIngredient
 {
+    public CocktailIngredient()
+    {
+    }
+
+    public CocktailIngredient(Guid cocktailId, Cocktail cocktail, Guid ingredientId, Ingredient ingredient, int quantity, string unit)
+    {
+        CocktailId = cocktailId;
+        Cocktail = cocktail;
+        IngredientId = ingredientId;
+        Ingredient = ingredient;
+        Quantity = quantity;
+        Unit = unit;
+    }
+
     public Guid CocktailId { get; set; }
 
-    [ForeignKey(nameof(CocktailId))]
     public Cocktail Cocktail { get; set; }
 
     public Guid IngredientId { get; set; }
 
-    [ForeignKey(nameof(IngredientId))]
     public Ingredient Ingredient { get; set; }
 
     [Required(ErrorMessage = "Quantity is required.")]

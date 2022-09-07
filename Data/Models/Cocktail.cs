@@ -29,13 +29,16 @@ public class Cocktail
     [Required(ErrorMessage = "Cocktail ingredients are required.")]
     public ICollection<Ingredient> Ingredients { get; set; }
 
+    public List<CocktailIngredient> CocktailIngredients { get; set; }
+
     [MaxLength(1024)]
     [Required(ErrorMessage = "Cocktail instructions are required.")]
     public string Instructions { get; set; }
 
     public Uri InstructionsVideo { get; set; }
 
-    public DateTime CreatedAt { get; }
+    [Required(ErrorMessage = "Creation date is required.")]
+    public DateTime CreatedAt { get; set; }
 
     public Guid GlassId { get; set; }
 

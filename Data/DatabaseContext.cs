@@ -1,5 +1,6 @@
 ﻿using Drinktionary.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace Drinktionary.Data;
 
@@ -13,6 +14,8 @@ public class DatabaseContext : DbContext
     }
 
     public DbSet<Cocktail> Cocktails { get; set; }
+
+    public DbSet<CocktailIngredient> CocktailIngredients { get; set; }
 
     public DbSet<Glass> Glasses { get; set; }
 
@@ -81,5 +84,24 @@ public class DatabaseContext : DbContext
             new PreparationMethod("Blending Method", "The blending method of mixing a cocktail is used for combining fruits, solid foods, ice, etc. in an electric blender. Any drink that can be shaken may be made by blending as well."),
             new PreparationMethod("Layering Method", "The layering cocktail-making method is used when the ingredients used are of a different color, flavor, and sensitize. One ingredient is floated over the other by pouring gently over the back of a spoon into a small straight-sided glass.")
         );
+
+        modelBuilder.Entity<Cocktail>()
+            .HasMany(c => c.Ingredients)
+            .WithMany(i => i.Cocktails)
+            .UsingEntity<CocktailIngredient>(
+                j => j
+                    .HasOne(ci => ci.Ingredient)
+                    .WithMany(i => i.CocktailIngredients)
+                    .HasForeignKey(ci => ci.IngredientId),
+                j => j
+                    .HasOne(ci => ci.Cocktail)
+                    .WithMany(c => c.CocktailIngredients)
+                    .HasForeignKey(ci => ci.CocktailId),
+                j =>
+                {
+                    j.Property(ci => ci.Quantity);
+                    j.Property(ci => ci.Unit);
+                    j.HasKey(ci => new { ci.CocktailId, ci.IngredientId });
+                });
     }
 }

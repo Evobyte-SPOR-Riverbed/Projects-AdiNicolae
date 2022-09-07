@@ -38,5 +38,6 @@ public class Glass
     [InverseProperty(nameof(Cocktail.GlassType))]
     public ICollection<Cocktail> Cocktails { get; set; }
 
-    public DateTime CreatedAt { get; }
+    [Required(ErrorMessage = "Creation date is required.")]
+    public DateTime CreatedAt { get; set; }
 }

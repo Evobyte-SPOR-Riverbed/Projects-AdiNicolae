@@ -47,7 +47,8 @@ public class Review
     [ForeignKey(nameof(AuthorId))]
     public User Author { get; set; }
 
-    public DateTime CreatedAt { get; }
+    [Required(ErrorMessage = "Creation date is required.")]
+    public DateTime CreatedAt { get; set; }
 
     public Guid CocktailId { get; set; }
 

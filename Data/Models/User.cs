@@ -76,9 +76,6 @@ public class User
     [Required(ErrorMessage = "Password is required.")]
     public string Password { get; set; }
 
-    [MaxLength(204800, ErrorMessage = "Avatar is too big.")]
-    public byte[] AvatarBytes { get; set; }
-
     [StringLength(2, ErrorMessage = "Invalid country code.")]
     [Required(ErrorMessage = "Country code is required.")]
     public string CountryAlpha2 { get; set; }
@@ -95,7 +92,8 @@ public class User
     [Required(ErrorMessage = "Drinker type is required.")]
     public DrinkerType DrinkerType { get; set; }
 
-    public DateTime CreatedAt { get; }
+    [Required(ErrorMessage = "Creation date is required.")]
+    public DateTime CreatedAt { get; set; }
 
     [InverseProperty(nameof(Review.Author))]
     public ICollection<Review> Reviews { get; set; }
