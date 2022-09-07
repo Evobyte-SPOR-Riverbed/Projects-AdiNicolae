@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import Config from '../../assets/config.json';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 export interface ICountry {
@@ -19,12 +18,12 @@ export class CountryService {
       'Upgrade-Insecure-Requests': '1'
     })
   }
-  private apiUrl = Config.countryApiServer.url;
+  private apiUrl = 'https://restcountries.com/v3.1/';
 
   constructor(private httpClient: HttpClient) { }
 
   getCountries(): Observable<ICountry[]> {
-    return this.httpClient.get<[]>(this.apiUrl + '/all/', this.httpOptions)
+    return this.httpClient.get<[]>(`${this.apiUrl}all`, this.httpOptions)
       .pipe(map(response => response.map((countryData): ICountry => ({
         name: countryData['name']['common'],
         alpha2Code: countryData['cca2'],
