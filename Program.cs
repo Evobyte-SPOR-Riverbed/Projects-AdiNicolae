@@ -3,6 +3,7 @@ using Drinktionary.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace Drinktionary;
 
@@ -13,7 +14,7 @@ public static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllers();
 
         // Add scoped cache service.
         builder.Services.AddScoped<ICacheService, CacheService>();
@@ -37,6 +38,8 @@ public static class Program
             };
         });
 
+        builder.Services.AddSwaggerGen();
+
         // Add database context.
         builder.Services.AddDbContext<DatabaseContext>();
 
@@ -56,6 +59,8 @@ public static class Program
         app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
         app.MapControllerRoute(
             name: "default",
