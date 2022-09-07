@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Drinktionary.Data;
 using Drinktionary.Data.Models;
+using Drinktionary.Data.Models.Authentication;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Drinktionary.Controllers
 {
@@ -19,6 +19,87 @@ namespace Drinktionary.Controllers
         public UsersController(DatabaseContext context)
         {
             _context = context;
+        }
+
+        [HttpPost("Authenticate")]
+        public async Task<ActionResult<LoginResponse>> Authenticate([FromBody] UserLogin userLogin)
+        {
+            if (_context.Users == null)
+            {
+                return Problem("Entity set 'DatabaseContext.Users' is null.");
+            }
+
+            if (userLogin == null || !ModelState.IsValid)
+            {
+                return BadRequest("Invalid authentication request.");
+            }
+
+            bool emailExists = await _context.Users.AnyAsync(u => u.EmailAddress == userLogin.EmailAddress);
+            if (!emailExists)
+            {
+                return NotFound("User matching this credentials was not found.");
+            }
+
+            bool validAuthentication = await _context.Users.AnyAsync(u => u.EmailAddress == userLogin.EmailAddress && u.Password == userLogin.Password);
+            if (!validAuthentication)
+            {
+                return Problem("User's 'Password' does not match.");
+            }
+
+            User user = await _context.Users.FirstAsync(u => u.EmailAddress == userLogin.EmailAddress && u.Password == userLogin.Password);
+            DateTime expirationDate = userLogin.RememberBrowser ? DateTime.Now.AddMonths(1) : DateTime.Now.AddDays(1);
+            SymmetricSecurityKey secretKey = new(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]));
+            SigningCredentials signinCredentials = new(secretKey, SecurityAlgorithms.HmacSha256);
+            JwtSecurityToken tokenOptions = new(
+                issuer: ConfigurationManager.AppSetting["JWT:ValidIssuer"],
+                audience: ConfigurationManager.AppSetting["JWT:ValidAudience"],
+                claims: new List<Claim>
+                {
+                    new Claim(nameof(user.Id), user.Id.ToString()),
+                    new Claim(nameof(user.FirstName), user.FirstName),
+                    new Claim(nameof(user.LastName), user.LastName),
+                    new Claim(nameof(user.EmailAddress), user.EmailAddress),
+                    new Claim(nameof(user.CountryAlpha2), user.CountryAlpha2),
+                    new Claim("Age", (DateTime.Now.Year - user.Birthday.Year).ToString()),
+                    new Claim(nameof(user.Sex), user.Sex.ToString()),
+                    new Claim(nameof(user.DrinkerType), user.DrinkerType.ToString())
+                },
+                expires: expirationDate,
+                signingCredentials: signinCredentials);
+            string tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return new LoginResponse(tokenString);
+        }
+
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromBody] UserRegister userRegister)
+        {
+            if (_context.Users == null)
+            {
+                return Problem("Entity set 'DatabaseContext.Users' is null.");
+            }
+
+            if (userRegister == null || !ModelState.IsValid)
+            {
+                return BadRequest("Invalid registration request.");
+            }
+
+            bool emailExists = await _context.Users.AnyAsync(u => u.EmailAddress == userRegister.EmailAddress);
+            if (emailExists)
+            {
+                return Problem("User with same 'EmailAddress' already exists.");
+            }
+
+            User user = new(userRegister);
+            bool idExists = await _context.Users.AnyAsync(u => u.Id == user.Id);
+            if (idExists) // Is this even possible?
+            {
+                return Problem("User with same 'Id' already exists.");
+            }
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return Ok("User registered successfully.");
         }
 
         // GET: api/Users
