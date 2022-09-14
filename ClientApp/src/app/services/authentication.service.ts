@@ -6,28 +6,28 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 import { DrinkerType, SexType } from '../helpers/enums.module';
 import { MiscModule } from '../helpers/misc.module';
 
-export interface LoginResponse {
+export interface ILoginResponse {
   accessToken: string;
 }
 
-export interface User {
+export interface IUser {
   id: string;
   firstName: string;
   lastName: string;
   emailAddress: string;
   countryAlpha2: string;
-  age: number;
+  birthday: Date;
   sex: SexType;
   drinkerType: DrinkerType;
 }
 
-export interface UserLogin {
+export interface IUserLogin {
   emailAddress: string;
   password: string;
   rememberBrowser: boolean;
 }
 
-export interface UserRegister {
+export interface IUserRegister {
   firstName: string;
   lastName: string;
   emailAddress: string;
@@ -48,8 +48,8 @@ export class AuthenticationService {
       'Content-Type': 'application/json'
     })
   }
-  private currentUserSubject: BehaviorSubject<User> | undefined;
-  public currentUser: Observable<User> | undefined;
+  private currentUserSubject: BehaviorSubject<IUser> | undefined;
+  public currentUser: Observable<IUser> | undefined;
 
   constructor(@Inject('BASE_URL') private baseUrl: string, private httpClient: HttpClient, private jwtHelper: JwtHelperService, private snackBar: MatSnackBar) {
     if (this.jwtHelper.isTokenExpired(this.accessToken)) {
@@ -58,31 +58,31 @@ export class AuthenticationService {
     }
 
     const decodedAccessToken = this.jwtHelper.decodeToken(this.accessToken);
-    this.currentUserSubject = new BehaviorSubject<User>({
+    this.currentUserSubject = new BehaviorSubject<IUser>({
       id: decodedAccessToken['Id'],
       firstName: decodedAccessToken['FirstName'],
       lastName: decodedAccessToken['LastName'],
       emailAddress: decodedAccessToken['EmailAddress'],
       countryAlpha2: decodedAccessToken['CountryAlpha2'],
-      age: parseInt(decodedAccessToken['Age']),
+      birthday: new Date(Date.parse(decodedAccessToken['Birthday'])),
       sex: MiscModule.fromSexString(decodedAccessToken['Sex']),
       drinkerType: MiscModule.fromDrinkerTypeString(decodedAccessToken['DrinkerType'])
     });
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public authenticate(userLogin: UserLogin): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(`${this.baseUrl}api/users/authenticate`, JSON.stringify(userLogin), this.httpOptions)
+  public authenticate(userLogin: IUserLogin): Observable<ILoginResponse> {
+    return this.httpClient.post<ILoginResponse>(`${this.baseUrl}api/users/authenticate`, JSON.stringify(userLogin), this.httpOptions)
       .pipe(map(loginResponse => {
         const decodedAccessToken = this.jwtHelper.decodeToken(loginResponse.accessToken);
         localStorage.setItem('accessToken', loginResponse.accessToken);
-        this.currentUserSubject = new BehaviorSubject<User>({
+        this.currentUserSubject = new BehaviorSubject<IUser>({
           id: decodedAccessToken['Id'],
           firstName: decodedAccessToken['FirstName'],
           lastName: decodedAccessToken['LastName'],
           emailAddress: decodedAccessToken['EmailAddress'],
           countryAlpha2: decodedAccessToken['CountryAlpha2'],
-          age: parseInt(decodedAccessToken['Age']),
+          birthday: new Date(Date.parse(decodedAccessToken['Birthday'])),
           sex: MiscModule.fromSexString(decodedAccessToken['Sex']),
           drinkerType: MiscModule.fromDrinkerTypeString(decodedAccessToken['DrinkerType'])
         });
@@ -91,7 +91,7 @@ export class AuthenticationService {
       }));
   }
 
-  public register(userRegister: UserRegister) {
+  public register(userRegister: IUserRegister) {
     return this.httpClient.post(`${this.baseUrl}api/users/register/`, JSON.stringify(userRegister), this.httpOptions);
   }
 
@@ -105,7 +105,7 @@ export class AuthenticationService {
     return localStorage.getItem('accessToken') ?? undefined;
   }
 
-  public get currentUserValue(): User {
+  public get currentUserValue(): IUser {
     return this.currentUserSubject!.value;
   }
 
