@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Drinktionary.Services;
 
 namespace Drinktionary;
 
@@ -15,9 +16,6 @@ public static class Program
 
         // Add services to the container.
         builder.Services.AddControllers();
-
-        // Add scoped cache service.
-        builder.Services.AddScoped<ICacheService, CacheService>();
 
         // Add authentication service.
         builder.Services.AddAuthentication(opt =>
@@ -36,6 +34,19 @@ public static class Program
                 ValidAudience = ConfigurationManager.AppSetting["JWT:ValidAudience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]))
             };
+        });
+
+        // Add HTTP Context Accessor.
+        builder.Services.AddHttpContextAccessor();
+
+        // Add services.
+        builder.Services.AddScoped<ICacheService, CacheService>();
+        builder.Services.AddSingleton<IUriService, UriService>(sp =>
+        {
+            IHttpContextAccessor accessor = sp.GetRequiredService<IHttpContextAccessor>();
+            HttpRequest request = accessor.HttpContext.Request;
+            string uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+            return new UriService(uri);
         });
 
         builder.Services.AddSwaggerGen();
