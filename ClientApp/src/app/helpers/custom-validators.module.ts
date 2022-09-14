@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbstractControl, FormControl, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 @NgModule({
   declarations: [],
@@ -9,23 +9,30 @@ import { AbstractControl, FormControl, ValidatorFn } from '@angular/forms';
   ]
 })
 export class CustomValidatorsModule {
+  static noWhitespace(controlName: string): ValidatorFn {
+    return (c: AbstractControl): ValidationErrors | null => {
+      const control = c.get(controlName);
+      if (control?.errors && !control?.errors['whitespace']) {
+        return null;
+      }
+
+      const isWhitespace = control?.value.indexOf(' ') > -1;
+      c.get(controlName)?.setErrors(isWhitespace ? { 'whitespace': true } : null);
+      return isWhitespace ? { 'whitespace': true } : null;
+    };
+  }
+
   static mustMatch(controlName: string, checkControlName: string): ValidatorFn {
-    return (controls: AbstractControl) => {
-      const control = controls.get(controlName);
-      const checkControl = controls.get(checkControlName);
+    return (c: AbstractControl): ValidationErrors | null => {
+      const control = c.get(controlName);
+      const checkControl = c.get(checkControlName);
       if (checkControl?.errors && !checkControl.errors['mismatch']) {
         return null;
       }
 
       const isValid = control?.value === checkControl?.value;
-      controls.get(checkControlName)?.setErrors(isValid ? null : { 'mismatch': true });
+      c.get(checkControlName)?.setErrors(isValid ? null : { 'mismatch': true });
       return isValid ? null : { 'mismatch': true };
     };
-  }
-
-  static noWhitespace(control: FormControl) {
-    const isWhitespace = (control.value as string).indexOf(' ') >= 0;
-    const isValid = !isWhitespace;
-    return isValid ? null : { 'whitespace': true };
   }
 }

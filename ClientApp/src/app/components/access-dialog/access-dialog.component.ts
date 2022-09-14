@@ -1,12 +1,12 @@
+import { formatDate } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabGroup } from '@angular/material/tabs';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { CustomValidatorsModule } from '../../helpers/custom-validators.module';
 import { DrinkerType, SexType } from '../../helpers/enums.module';
-import { AuthenticationService, LoginResponse, UserLogin } from '../../services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 import { CountryService, ICountry } from '../../services/country.service';
 
 enum TabType {
@@ -127,8 +127,8 @@ export class AccessDialogComponent {
     ];
 
     const currentDate = new Date();
-    this.minDate = new Date(currentDate.getFullYear() - 150, currentDate.getMonth(), currentDate.getDay()).toISOString().slice(0, 10);
-    this.maxDate = new Date(currentDate.getFullYear() - 18, currentDate.getMonth(), currentDate.getDay()).toISOString().slice(0, 10);
+    this.minDate = formatDate(new Date(currentDate.getFullYear() - 150, currentDate.getMonth(), currentDate.getDay()), 'yyyy-MM-dd', 'en-US');
+    this.maxDate = formatDate(new Date(currentDate.getFullYear() - 18, currentDate.getMonth(), currentDate.getDay()), 'yyyy-MM-dd', 'en-US');
 
     this.loginForm = new FormGroup(
       {
@@ -143,14 +143,14 @@ export class AccessDialogComponent {
         firstName: new FormControl('', [Validators.required]),
         lastName: new FormControl('', [Validators.required]),
         emailAddress: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(14), CustomValidatorsModule.noWhitespace]),
+        password: new FormControl('', [Validators.required, Validators.minLength(14)]),
         confirmPassword: new FormControl('', [Validators.required, Validators.minLength(14)]),
         birthday: new FormControl(this.maxDate, [Validators.required]),
         country: new FormControl('', [Validators.required]),
         sex: new FormControl('', [Validators.required]),
         drinkerType: new FormControl('', [Validators.required])
       },
-      CustomValidatorsModule.mustMatch('password', 'confirmPassword')
+      [CustomValidatorsModule.noWhitespace('password'), CustomValidatorsModule.mustMatch('password', 'confirmPassword')]
     );
   }
 
@@ -165,8 +165,7 @@ export class AccessDialogComponent {
         emailAddress: this.loginFormFields.emailAddress.value,
         password: this.loginFormFields.password.value,
         rememberBrowser: this.loginFormFields.rememberBrowser.value
-      }).subscribe(loginResponse => {
-        // localStorage.setItem("accessToken", loginResponse.accessToken);
+      }).subscribe(() => {
         this.dialogRef.close();
         this.snackBar.open('Authentication was successful.');
       }, error => {
