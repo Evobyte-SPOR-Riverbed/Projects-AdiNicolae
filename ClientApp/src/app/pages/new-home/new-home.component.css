@@ -10,11 +10,3 @@ mat-drawer-container {
 mat-grid-tile {
   overflow: visible;
 }
-
-.mat-drawer-container > mat-divider {
-  padding-bottom: 8px;
-}
-
-.mat-drawer-content-container {
-  padding: 16px;
-}

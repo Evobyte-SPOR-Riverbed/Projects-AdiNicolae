@@ -1,18 +1,6 @@
 <mat-drawer-container>
   <mat-drawer mode="side" position="end" [opened]="drawer.get()">
-    <div class="mat-drawer-container">
-      <h1>Filters</h1>
-      <p>Methods to help you filter your artistically-drinking habits.</p>
-      <mat-divider></mat-divider>
-      <h2>Glasses</h2>
-      <p>Nada!</p>
-      <mat-divider></mat-divider>
-      <h2>Preparation Methods</h2>
-      <p>Nada!</p>
-      <mat-divider></mat-divider>
-      <h2>Ingredients</h2>
-      <p>Nada!</p>
-    </div>
+    <app-filters-drawer></app-filters-drawer>
   </mat-drawer>
   <mat-drawer-content>
     <mat-toolbar>

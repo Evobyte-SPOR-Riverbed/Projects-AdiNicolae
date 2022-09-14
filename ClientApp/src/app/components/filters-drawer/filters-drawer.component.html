@@ -1,0 +1,73 @@
+<div class="filters-drawer-container">
+  <h1>Filters</h1>
+  <p>Methods to help you filter your artistically-drinking habits.</p>
+  <mat-divider></mat-divider>
+  <h2>Glasses</h2>
+  <div *ngIf="glassesFilterResponse">
+    <mat-checkbox *ngFor="let glass of glassFilters"
+                  (change)="onGlassChange($event)"
+                  [checked]="filterService.isGlassApplied(glass.id)"
+                  [value]="glass.id">
+      {{glass.name}}
+      <span> ({{glass.cocktailNumber}})</span>
+      <mat-icon [matTooltip]="glass.description"
+                matTooltipPosition="left">
+        info
+      </mat-icon>
+    </mat-checkbox>
+  </div>
+  <p *ngIf="notFoundGlasses">Glasses not found.</p>
+  <div class="mat-spinner-container" *ngIf="!glassesFilterResponse">
+    <mat-spinner diameter="36"></mat-spinner>
+  </div>
+  <a *ngIf="canShowMoreGlasses"
+     [routerLink]=""
+     queryParamsHandling="preserve"
+     (click)="showMoreGlasses()">[+ show more]</a>
+  <mat-divider></mat-divider>
+  <h2>Preparation Methods</h2>
+  <div *ngIf="prepMethodsFilterResponse">
+    <mat-checkbox *ngFor="let prepMethod of prepMethodFilters"
+                  (change)="onPrepMethodChange($event)"
+                  [checked]="filterService.isPrepMethodApplied(prepMethod.id)"
+                  [value]="prepMethod.id">
+      {{prepMethod.name}}
+      <span> ({{prepMethod.cocktailNumber}})</span>
+      <mat-icon [matTooltip]="prepMethod.description"
+                matTooltipPosition="left">
+        info
+      </mat-icon>
+    </mat-checkbox>
+  </div>
+  <div class="mat-spinner-container" *ngIf="!prepMethodsFilterResponse">
+    <mat-spinner diameter="36"></mat-spinner>
+  </div>
+  <p *ngIf="notFoundPrepMethods">Preparation methods not found.</p>
+  <a *ngIf="canShowMorePrepMethods"
+     [routerLink]=""
+     queryParamsHandling="preserve"
+     (click)="showMorePrepMethods()">[+ show more]</a>
+  <mat-divider></mat-divider>
+  <h2>Ingredients</h2>
+  <div *ngIf="ingredientsFilterResponse">
+    <mat-checkbox *ngFor="let ingredient of ingredientFilters"
+                  (change)="onIngredientChange($event)"
+                  [checked]="filterService.isIngredientApplied(ingredient.id)"
+                  [value]="ingredient.id">
+      {{ingredient.name}}
+      <span> ({{ingredient.cocktailNumber}})</span>
+      <mat-icon [matTooltip]="ingredient.description"
+                matTooltipPosition="left">
+        info
+      </mat-icon>
+    </mat-checkbox>
+  </div>
+  <div class="mat-spinner-container" *ngIf="!ingredientsFilterResponse">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+  <p *ngIf="notFoundIngredients">Ingredients not found.</p>
+  <a *ngIf="canShowMoreIngredients"
+     [routerLink]=""
+     queryParamsHandling="preserve"
+     (click)="showMoreIngredients()">[+ show more]</a>
+</div>

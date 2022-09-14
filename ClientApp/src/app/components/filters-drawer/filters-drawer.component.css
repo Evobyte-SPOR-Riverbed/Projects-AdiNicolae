@@ -1,0 +1,39 @@
+a {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: inherit;
+}
+
+mat-icon {
+  cursor: help;
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+span {
+  color: darkgrey;
+}
+
+.filters-drawer-container {
+  padding: 16px;
+}
+
+.filters-drawer-container mat-divider {
+  margin-bottom: 8px;
+}
+
+.filters-drawer-container mat-divider:not(:first-child) {
+  margin-top: 16px;
+}
+
+.mat-checkbox-container {
+  display: table-row;
+}
+
+.mat-spinner-container {
+  display: flex;
+  justify-content: center;
+}

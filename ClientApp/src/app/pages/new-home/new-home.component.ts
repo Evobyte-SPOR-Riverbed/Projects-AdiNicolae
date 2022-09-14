@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { DrawerService } from '../../services/drawer.service';
+import { IGlass, IIngredient, IPreparationMethod } from '../../services/filters.service';
 
 @Component({
   selector: 'app-new-home',

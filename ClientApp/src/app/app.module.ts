@@ -28,6 +28,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { CountryService } from './services/country.service'
 import { DrawerService } from './services/drawer.service';
 import { BearerInterceptor } from './helpers/bearer-interceptor.module';
+import { FiltersDrawerComponent } from './components/filters-drawer/filters-drawer.component';
 
 export function accessTokenGetter(): string | null {
   return localStorage.getItem("accessToken");
@@ -38,6 +39,7 @@ export function accessTokenGetter(): string | null {
     AppComponent,
     AccessDialogComponent,
     CocktailCardComponent,
+    FiltersDrawerComponent,
     FooterComponent,
     NavMenuComponent,
     HomeComponent,
