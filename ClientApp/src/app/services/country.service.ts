@@ -31,6 +31,15 @@ export class CountryService {
       }))), catchError(this.errorHandler));
   }
 
+  getCountryByAlphaCode(alphaCode: string): Observable<ICountry> {
+    return this.httpClient.get<[]>(`${this.apiUrl}alpha/${alphaCode}`, this.httpOptions)
+      .pipe(map(response => response.map((countryData): ICountry => ({
+        name: countryData['name']['common'],
+        alpha2Code: countryData['cca2'],
+        flagUrl: countryData['flags']['png']
+      }))[0]), catchError(this.errorHandler));
+  }
+
   errorHandler(error: {
     error: {
       message: string;

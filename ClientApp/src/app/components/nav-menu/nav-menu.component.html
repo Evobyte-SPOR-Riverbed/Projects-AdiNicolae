@@ -45,16 +45,24 @@
 
     <mat-menu #accountMenu="matMenu">
       <div *ngIf="authenticationService.isAuthenticated">
-        <div class="account-info-container">
+        <div class="account-info-outer-container">
           <span>{{ authenticationService.currentUserValue.emailAddress }}</span>
-          <div class="account-info-container">{{ authenticationService.currentUserValue.countryAlpha2 }} {{ authenticationService.currentUserValue.sex }} - {{ authenticationService.currentUserValue.age }} Y.O.</div>
+          <div class="account-info-inner-container">
+            <img class="flag-image"
+                 [matTooltip]="userCountry!.name"
+                 [src]="userCountry!.flagUrl" />
+            <div [matTooltip]="sexString">
+              {{sexInitial}}
+            </div>
+            &nbsp;- {{ age }} Y.O.
+          </div>
         </div>
         <mat-divider></mat-divider>
         <button mat-menu-item>
           <mat-icon>book</mat-icon>
           <span>Favorites</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="openSettingsDialog()">
           <mat-icon>settings</mat-icon>
           <span>Settings</span>
         </button>
