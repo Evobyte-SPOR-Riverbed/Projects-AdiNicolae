@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Drinktionary.Data.Models;
@@ -13,17 +12,19 @@ public class Glass
         CreatedAt = DateTime.Now;
     }
 
-    public Glass(string name)
+    public Glass(string name, string description)
     {
         Id = Guid.NewGuid();
         Name = name;
+        Description = description;
         CreatedAt = DateTime.Now;
     }
 
-    public Glass(string name, ICollection<Cocktail> cocktails)
+    public Glass(string name, string description, ICollection<Cocktail> cocktails)
     {
         Id = Guid.NewGuid();
         Name = name;
+        Description = description;
         CreatedAt = DateTime.Now;
         Cocktails = cocktails;
     }
@@ -34,6 +35,10 @@ public class Glass
     [MaxLength(256)]
     [Required(ErrorMessage = "Glass name is required.")]
     public string Name { get; set; }
+
+    [MaxLength(1024)]
+    [Required(ErrorMessage = "Glass description is required.")]
+    public string Description { get; set; }
 
     [InverseProperty(nameof(Cocktail.GlassType))]
     public ICollection<Cocktail> Cocktails { get; set; }
