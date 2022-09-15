@@ -4,15 +4,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabGroup } from '@angular/material/tabs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { CustomValidatorsModule } from '../../helpers/custom-validators.module';
 import { DrinkerType, SexType } from '../../helpers/enums.module';
 import { AuthenticationService } from '../../services/authentication.service';
 import { CountryService, ICountry } from '../../services/country.service';
-
-enum TabType {
-  Register,
-  Login
-}
+import { UserService } from '../../services/user.service';
 
 interface Drinker {
   value: number | DrinkerType;
@@ -25,18 +22,11 @@ interface Sex {
 }
 
 @Component({
-  selector: 'app-access-dialog',
-  templateUrl: './access-dialog.component.html',
-  styleUrls: ['./access-dialog.component.css']
+  selector: 'app-settings-dialog',
+  templateUrl: './settings-dialog.component.html',
+  styleUrls: ['./settings-dialog.component.css']
 })
-export class AccessDialogComponent {
-  // Components
-  @ViewChild('mainTabGroup')
-  mainTabGroup!: MatTabGroup;
-
-  // Pseudo-enums
-  TabType = TabType;
-
+export class SettingsDialogComponent {
   // Validating messages
   formControlsValidations = {
     'firstName': [
@@ -70,32 +60,33 @@ export class AccessDialogComponent {
     ],
     'drinkerType': [
       { type: 'required', message: 'Drinker type is required.' }
-    ]
+    ],
+    'actualPassword': [
+      { type: 'required', message: 'Confirmation password is required.' },
+      { type: 'minlength', message: 'Confirmation password must be at least 14 characters long.' }
+    ],
   };
 
   // Variables
   countries: ICountry[] = [];
   drinkerTypes: Drinker[];
-  loginForm: FormGroup;
   loading = false;
   maxDate: string;
   minDate: string;
-  registerForm: FormGroup;
+  settingsForm: FormGroup;
   sexTypes: Sex[];
-  showLoginPassword = false;
-  showRegisterPassword = false;
+  showPassword = false;
+  showActualPassword = false;
   showConfirmPassword = false;
   submitted = false;
 
   // Getters
-  get loginFormFields() {
-    return this.loginForm.controls;
-  }
-  get registerFormFields() {
-    return this.registerForm.controls;
+  get settingsFormFields() {
+    return this.settingsForm.controls;
   }
 
-  constructor(private authenticationService: AuthenticationService, private countryService: CountryService, private dialogRef: MatDialogRef<AccessDialogComponent>, private snackBar: MatSnackBar) {
+  constructor(public authenticationService: AuthenticationService, private countryService: CountryService, private dialogRef: MatDialogRef<SettingsDialogComponent>,
+    private jwtHelper: JwtHelperService, private snackBar: MatSnackBar, private userService: UserService) {
     this.countryService.getCountries().subscribe((countryData: ICountry[]) => {
       this.countries = countryData;
       this.countries.sort((n1, n2) => {
@@ -130,75 +121,56 @@ export class AccessDialogComponent {
     this.minDate = formatDate(new Date(currentDate.getFullYear() - 150, currentDate.getMonth(), currentDate.getDay()), 'yyyy-MM-dd', 'en-US');
     this.maxDate = formatDate(new Date(currentDate.getFullYear() - 18, currentDate.getMonth(), currentDate.getDay()), 'yyyy-MM-dd', 'en-US');
 
-    this.loginForm = new FormGroup(
+    const birthDate = this.authenticationService.currentUserValue.birthday;
+    this.settingsForm = new FormGroup(
       {
-        emailAddress: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required]),
-        rememberBrowser: new FormControl(false)
-      }
-    );
-
-    this.registerForm = new FormGroup(
-      {
-        firstName: new FormControl('', [Validators.required]),
-        lastName: new FormControl('', [Validators.required]),
-        emailAddress: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(14)]),
-        confirmPassword: new FormControl('', [Validators.required, Validators.minLength(14)]),
-        birthday: new FormControl(this.maxDate, [Validators.required]),
-        country: new FormControl('', [Validators.required]),
-        sex: new FormControl('', [Validators.required]),
-        drinkerType: new FormControl('', [Validators.required])
+        firstName: new FormControl(this.authenticationService.currentUserValue.firstName, [Validators.required]),
+        lastName: new FormControl(this.authenticationService.currentUserValue.lastName, [Validators.required]),
+        emailAddress: new FormControl(this.authenticationService.currentUserValue.emailAddress, [Validators.required, Validators.email]),
+        password: new FormControl('', [Validators.minLength(14)]),
+        confirmPassword: new FormControl('', [Validators.minLength(14)]),
+        birthday: new FormControl(formatDate(birthDate, 'yyyy-MM-dd', 'en-US'), [Validators.required]),
+        country: new FormControl(this.authenticationService.currentUserValue.countryAlpha2, [Validators.required]),
+        sex: new FormControl(this.authenticationService.currentUserValue.sex, [Validators.required]),
+        drinkerType: new FormControl(this.authenticationService.currentUserValue.drinkerType, [Validators.required]),
+        actualPassword: new FormControl('', [Validators.required, Validators.minLength(14)])
       },
       [CustomValidatorsModule.noWhitespace('password'), CustomValidatorsModule.mustMatch('password', 'confirmPassword')]
     );
   }
 
-  submitAccess() {
-    if (this.mainTabGroup.selectedIndex == TabType.Login) {
-      if (this.loginForm.invalid) {
-        return;
-      }
+  submitSettings(): void {
+    this.loading = true;
+    this.userService.updateUser({
+      firstName: this.settingsFormFields.firstName.value,
+      lastName: this.settingsFormFields.lastName.value,
+      emailAddress: this.settingsFormFields.emailAddress.value,
+      password: this.settingsFormFields.password.value,
+      countryAlpha2: this.settingsFormFields.country.value,
+      birthday: this.settingsFormFields.birthday.value,
+      sex: this.settingsFormFields.sex.value,
+      drinkerType: this.settingsFormFields.drinkerType.value,
+      actualPassword: this.settingsFormFields.actualPassword.value
+    }).subscribe(() => {
+      this.loading = false;
+      this.dialogRef.close();
+      this.snackBar.open('Settings updated successfuly.');
+    }, error => {
+      this.loading = false;
+      this.snackBar.open(`${error.status} - ${error.statusText}\n${error.error}`);
+    });
+  }
 
-      this.loading = true;
-      this.authenticationService.authenticate({
-        emailAddress: this.loginFormFields.emailAddress.value,
-        password: this.loginFormFields.password.value,
-        rememberBrowser: this.loginFormFields.rememberBrowser.value
-      }).subscribe(() => {
+  deleteAccount(): void {
+    this.loading = true;
+    this.userService.deleteOwnUser()
+      .subscribe(() => {
+        this.loading = false;
         this.dialogRef.close();
-        this.snackBar.open('Authentication was successful.');
+        this.snackBar.open('Account deleted successfuly.');
       }, error => {
         this.loading = false;
-        this.snackBar.open(`Error Code: ${error['status']}\n${error['detail']}`);
+        this.snackBar.open(`${error.status} - ${error.statusText}\n${error.error}`);
       });
-    }
-
-    if (this.mainTabGroup.selectedIndex == TabType.Register) {
-      if (this.registerForm.invalid) {
-        return;
-      }
-
-      this.loading = true;
-      this.authenticationService.register({
-        firstName: this.registerFormFields.firstName.value,
-        lastName: this.registerFormFields.lastName.value,
-        emailAddress: this.registerFormFields.emailAddress.value,
-        password: this.registerFormFields.password.value,
-        countryAlpha2: this.registerFormFields.country.value,
-        birthday: this.registerFormFields.birthday.value,
-        sex: this.registerFormFields.sex.value,
-        drinkerType: this.registerFormFields.drinkerType.value,
-      }).subscribe(() => {
-        this.loading = false;
-        this.mainTabGroup.selectedIndex = TabType.Login;
-        this.loginFormFields.emailAddress.setValue(this.registerFormFields.emailAddress.value);
-        this.snackBar.open('Registration was successful.');
-      }, error => {
-        this.loading = false;
-        this.snackBar.open(`Error Code: ${error['status']}\n${error['detail']}`);
-        console.log(error);
-      });
-    }
   }
 }

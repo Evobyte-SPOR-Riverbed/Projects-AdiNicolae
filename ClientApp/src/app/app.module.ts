@@ -29,6 +29,7 @@ import { CountryService } from './services/country.service'
 import { DrawerService } from './services/drawer.service';
 import { BearerInterceptor } from './helpers/bearer-interceptor.module';
 import { FiltersDrawerComponent } from './components/filters-drawer/filters-drawer.component';
+import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
 
 export function accessTokenGetter(): string | null {
   return localStorage.getItem("accessToken");
@@ -46,6 +47,7 @@ export function accessTokenGetter(): string | null {
     NewHomeComponent,
     CounterComponent,
     FetchDataComponent,
+    SettingsDialogComponent,
     WelcomeCardComponent
   ],
   imports: [

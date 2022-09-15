@@ -47,7 +47,7 @@ export class AuthenticationService {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     })
-  }
+  };
   private currentUserSubject: BehaviorSubject<IUser> | undefined;
   public currentUser: Observable<IUser> | undefined;
 
@@ -74,18 +74,8 @@ export class AuthenticationService {
   public authenticate(userLogin: IUserLogin): Observable<ILoginResponse> {
     return this.httpClient.post<ILoginResponse>(`${this.baseUrl}api/users/authenticate`, JSON.stringify(userLogin), this.httpOptions)
       .pipe(map(loginResponse => {
-        const decodedAccessToken = this.jwtHelper.decodeToken(loginResponse.accessToken);
         localStorage.setItem('accessToken', loginResponse.accessToken);
-        this.currentUserSubject = new BehaviorSubject<IUser>({
-          id: decodedAccessToken['Id'],
-          firstName: decodedAccessToken['FirstName'],
-          lastName: decodedAccessToken['LastName'],
-          emailAddress: decodedAccessToken['EmailAddress'],
-          countryAlpha2: decodedAccessToken['CountryAlpha2'],
-          birthday: new Date(Date.parse(decodedAccessToken['Birthday'])),
-          sex: MiscModule.fromSexString(decodedAccessToken['Sex']),
-          drinkerType: MiscModule.fromDrinkerTypeString(decodedAccessToken['DrinkerType'])
-        });
+        this.currentUserSubject = new BehaviorSubject<IUser>(this.tokenClaimsToUserDetails(loginResponse.accessToken));
         this.currentUser = this.currentUserSubject.asObservable();
         return loginResponse;
       }));
@@ -116,5 +106,19 @@ export class AuthenticationService {
     }
 
     return this.currentUser && this.accessToken ? true : false;
+  }
+
+  public tokenClaimsToUserDetails(token: string): IUser {
+    const decodedAccessToken = this.jwtHelper.decodeToken(token);
+    return {
+      id: decodedAccessToken['Id'],
+      firstName: decodedAccessToken['FirstName'],
+      lastName: decodedAccessToken['LastName'],
+      emailAddress: decodedAccessToken['EmailAddress'],
+      countryAlpha2: decodedAccessToken['CountryAlpha2'],
+      birthday: new Date(Date.parse(decodedAccessToken['Birthday'])),
+      sex: MiscModule.fromSexString(decodedAccessToken['Sex']),
+      drinkerType: MiscModule.fromDrinkerTypeString(decodedAccessToken['DrinkerType'])
+    }
   }
 }

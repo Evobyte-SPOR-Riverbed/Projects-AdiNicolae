@@ -1,0 +1,119 @@
+<div class="mat-dialog-title">
+  <div class="title-mat-icon-container">
+    <mat-icon svgIcon="logo"></mat-icon>
+  </div>
+  <h2><span>Drinktionary</span> says 'Hello', {{ authenticationService.currentUserValue.firstName }}!</h2>
+</div>
+
+<mat-dialog-content>
+  <p>Want to modify anything? Well.. You've come to the right place!</p>
+  <div class="form-container" [formGroup]="settingsForm">
+    <div class="form-group-container">
+      <mat-form-field>
+        <mat-label>First name</mat-label>
+        <input matInput formControlName="firstName" type="text">
+        <mat-error *ngFor="let validation of formControlsValidations.firstName">
+          <div *ngIf="settingsFormFields.firstName.hasError(validation.type)">{{ validation.message }}</div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Last name</mat-label>
+        <input matInput formControlName="lastName" type="text">
+        <mat-error *ngFor="let validation of formControlsValidations.lastName">
+          <div *ngIf="settingsFormFields.lastName.hasError(validation.type)">{{ validation.message }}</div>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Email address</mat-label>
+      <input matInput formControlName="emailAddress" type="email">
+      <mat-error *ngFor="let validation of formControlsValidations.emailAddress">
+        <div *ngIf="settingsFormFields.emailAddress.hasError(validation.type)">{{ validation.message }}</div>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" [type]="showPassword ? 'text' : 'password'">
+      <mat-icon matSuffix class="clickable-icon" (click)="showPassword = !showPassword">
+        {{ showPassword ? 'visibility_off' : 'visibility' }}
+      </mat-icon>
+      <mat-error *ngFor="let validation of formControlsValidations.password">
+        <div *ngIf="settingsFormFields.password.hasError(validation.type)">{{ validation.message }}</div>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Confirm password</mat-label>
+      <input matInput formControlName="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'">
+      <mat-icon matSuffix class="clickable-icon" (click)="showConfirmPassword = !showConfirmPassword">
+        {{ showConfirmPassword ? 'visibility_off' : 'visibility' }}
+      </mat-icon>
+      <mat-error *ngFor="let validation of formControlsValidations.confirmPassword">
+        <div *ngIf="settingsFormFields.confirmPassword.hasError(validation.type)">{{ validation.message }}</div>
+      </mat-error>
+    </mat-form-field>
+    <div class="form-group-container">
+      <mat-form-field>
+        <mat-label>Country</mat-label>
+        <mat-select formControlName="country">
+          <mat-option *ngFor="let country of countries" [value]="country.alpha2Code">
+            <img class="flag-image" [src]="country.flagUrl" />
+            {{country.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngFor="let validation of formControlsValidations.country">
+          <div *ngIf="settingsFormFields.country.hasError(validation.type)">{{ validation.message }}</div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Birthday</mat-label>
+        <input matInput formControlName="birthday" type="date" max="{{maxDate}}" min="{{minDate}}">
+        <mat-error *ngFor="let validation of formControlsValidations.birthday">
+          <div *ngIf="settingsFormFields.birthday.hasError(validation.type)">{{ validation.message }}</div>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group-container">
+      <mat-form-field>
+        <mat-label>Sex</mat-label>
+        <mat-select formControlName="sex">
+          <mat-option *ngFor="let sex of sexTypes" [value]="sex.value">
+            {{sex.viewValue}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngFor="let validation of formControlsValidations.sex">
+          <div *ngIf="settingsFormFields.sex.hasError(validation.type)">{{ validation.message }}</div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Drinker type</mat-label>
+        <mat-select formControlName="drinkerType">
+          <mat-option *ngFor="let drinkerType of drinkerTypes" [value]="drinkerType.value">
+            {{drinkerType.viewValue}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngFor="let validation of formControlsValidations.drinkerType">
+          <div *ngIf="settingsFormFields.drinkerType.hasError(validation.type)">{{ validation.message }}</div>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-form-field class="actual-password-form">
+      <mat-label>Actual Password</mat-label>
+      <input matInput formControlName="actualPassword" [type]="showActualPassword ? 'text' : 'password'">
+      <mat-icon matSuffix class="clickable-icon" (click)="showActualPassword = !showActualPassword">
+        {{ showActualPassword ? 'visibility_off' : 'visibility' }}
+      </mat-icon>
+      <mat-error *ngFor="let validation of formControlsValidations.actualPassword">
+        <div *ngIf="settingsFormFields.actualPassword.hasError(validation.type)">{{ validation.message }}</div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions [align]="loading ? 'center' : 'end'">
+  <div *ngIf="!loading">
+      <button mat-stroked-button color="warn" (click)="deleteAccount()">Delete Account</button>
+      <button mat-stroked-button mat-dialog-close>Cancel</button>
+      <button mat-stroked-button cdkFocusInitial [disabled]="settingsForm.invalid" (click)="submitSettings()">Proceed</button>
+  </div>
+  <mat-spinner *ngIf="loading" diameter="36"></mat-spinner>
+</mat-dialog-actions>

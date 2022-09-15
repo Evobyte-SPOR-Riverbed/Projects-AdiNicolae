@@ -8,6 +8,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Drinktionary.Data.DTOs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Drinktionary.Controllers;
 
@@ -44,7 +46,7 @@ public class UsersController : ControllerBase
         bool validAuthentication = await _context.Users.AnyAsync(u => u.EmailAddress == userLogin.EmailAddress && u.Password == userLogin.Password);
         if (!validAuthentication)
         {
-            return Problem("User's 'Password' does not match.");
+            return BadRequest("User's 'Password' does not match.");
         }
 
         User user = await _context.Users.FirstAsync(u => u.EmailAddress == userLogin.EmailAddress && u.Password == userLogin.Password);
@@ -79,7 +81,7 @@ public class UsersController : ControllerBase
             return Problem("Entity set 'DatabaseContext.Users' is null.");
         }
 
-        if (userRegister == null || !ModelState.IsValid)
+        if (userRegister == null)
         {
             return BadRequest("Invalid registration request.");
         }
@@ -87,14 +89,14 @@ public class UsersController : ControllerBase
         bool emailExists = await _context.Users.AnyAsync(u => u.EmailAddress == userRegister.EmailAddress);
         if (emailExists)
         {
-            return Problem("User with same 'EmailAddress' already exists.");
+            return BadRequest("User with same 'EmailAddress' already exists.");
         }
 
         User user = new(userRegister);
         bool idExists = await _context.Users.AnyAsync(u => u.Id == user.Id);
         if (idExists) // Is this even possible? Better safe I guess, lol
         {
-            return Problem("User with same 'Id' already exists.");
+            return BadRequest("User with same 'Id' already exists.");
         }
 
         _context.Users.Add(user);
@@ -104,27 +106,44 @@ public class UsersController : ControllerBase
     }
 
     // PUT: api/Users/5 To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutUser(Guid id, User user)
+    public async Task<IActionResult> PutUser(Guid id, [FromBody] SettingsUser settingsUser)
     {
-        if (id != user.Id)
-        {
-            return BadRequest("Cannot modify user 'Id' property.");
-        }
-
         if (HttpContext.User.Identity is not ClaimsIdentity identity
-        || !Guid.TryParse(identity.Claims.FirstOrDefault(c => c.Type == nameof(user.Id)).Value, out Guid claimsId)
-        || claimsId != id)
+        || !Guid.TryParse(identity.FindFirst("Id").Value, out Guid identityId)
+        || identityId != id)
         {
             return BadRequest("Cannot modify another user's information.");
         }
 
-        bool emailExists = await _context.Users.AnyAsync(u => u.EmailAddress == user.EmailAddress);
+        User? user = await _context.Users.FindAsync(id);
+        if (user == null)
+        {
+            return BadRequest("User with specified 'Id' does not exist.");
+        }
+
+        if (user.Password != settingsUser.ActualPassword)
+        {
+            return BadRequest("User's 'Password' does not match.");
+        }
+
+        bool emailExists = await _context.Users.AnyAsync(u => u.Id != id && u.EmailAddress == settingsUser.EmailAddress);
         if (emailExists)
         {
-            return Problem("User with same 'Email' already exists.");
+            return BadRequest("User with same 'Email' already exists.");
         }
+
+        user.FirstName = settingsUser.FirstName;
+        user.LastName = settingsUser.LastName;
+        user.EmailAddress = settingsUser.EmailAddress;
+        user.Password = settingsUser.Password?.Length == 0
+            ? user.Password
+            : settingsUser.Password;
+        user.CountryAlpha2 = settingsUser.CountryAlpha2;
+        user.Birthday = settingsUser.Birthday;
+        user.Sex = settingsUser.Sex;
+        user.DrinkerType = settingsUser.DrinkerType;
 
         _context.Entry(user).State = EntityState.Modified;
 
@@ -141,7 +160,7 @@ public class UsersController : ControllerBase
     }
 
     // DELETE: api/Users/5
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
@@ -150,10 +169,17 @@ public class UsersController : ControllerBase
             return Problem("Entity set 'DatabaseContext.Users' is null.");
         }
 
+        if (HttpContext.User.Identity is not ClaimsIdentity identity
+        || !Guid.TryParse(identity.FindFirst("Id").Value, out Guid identityId)
+        || identityId != id)
+        {
+            return BadRequest("Cannot delete another user's account.");
+        }
+
         var user = await _context.Users.FindAsync(id);
         if (user == null)
         {
-            return NotFound();
+            return BadRequest("User with specified 'Id' not found.");
         }
 
         _context.Users.Remove(user);

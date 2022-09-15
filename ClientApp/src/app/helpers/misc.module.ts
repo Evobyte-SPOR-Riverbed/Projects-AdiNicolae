@@ -24,4 +24,9 @@ export class MiscModule {
   static toDrinkerTypeString(drinkerType: DrinkerType): string {
     return ['Social drinker', 'Conformity drinker', 'Enhancement drinker', 'Coping drinker', 'None'][drinkerType];
   }
+
+  static calculateAge(birthDate: Date): number {
+    let timeDiff = Math.abs(Date.now() - birthDate.getTime());
+    return Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+  }
 }

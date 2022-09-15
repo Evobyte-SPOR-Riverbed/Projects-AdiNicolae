@@ -1,0 +1,75 @@
+mat-dialog-content {
+  max-height: 88vh !important;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+  mat-form-field > mat-error {
+    display: none !important;
+  }
+
+    mat-form-field > mat-error:first-child {
+      display: block !important;
+    }
+
+span {
+  color: #ff4081;
+}
+
+.actual-password-form {
+  margin-top: 1.34375em;
+}
+
+.clickable-icon {
+  cursor: pointer;
+}
+
+.flag-image {
+  margin-right: 8px;
+  height: 1em;
+  width: 1.33em;
+}
+
+.form-container {
+  margin-top: 16px;
+  scroll-behavior: unset;
+  height: auto;
+}
+
+  .form-container > .remember-checkbox-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+  }
+
+.form-group-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+  .form-group-container > mat-form-field {
+    width: 50%;
+  }
+
+    .form-group-container > mat-form-field:first-child {
+      padding-right: 4px;
+    }
+
+    .form-group-container > mat-form-field:last-child {
+      padding-left: 4px;
+    }
+
+.title-mat-icon-container {
+  display: flex;
+  justify-content: center;
+}
+
+  .title-mat-icon-container > mat-icon {
+    display: flex;
+  }
+
+.tab-icon {
+  margin-right: 8px;
+}

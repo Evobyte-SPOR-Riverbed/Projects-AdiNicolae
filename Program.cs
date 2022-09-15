@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Drinktionary.Services;
+using Drinktionary.Data.Models;
+using System.Security.Claims;
 
 namespace Drinktionary;
 
@@ -26,13 +28,15 @@ public static class Program
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"])),
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = ConfigurationManager.AppSetting["JWT:ValidIssuer"],
-                ValidAudience = ConfigurationManager.AppSetting["JWT:ValidAudience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]))
+                ValidAudience = ConfigurationManager.AppSetting["JWT:ValidAudience"]
+                
+                
             };
         });
 
@@ -65,11 +69,11 @@ public static class Program
         }
 
         app.UseHttpsRedirection();
-        app.UseAuthentication();
-        app.UseAuthorization();
         app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseAuthorization();
+        app.UseAuthentication();
         app.UseSwagger();
         app.UseSwaggerUI();
 
